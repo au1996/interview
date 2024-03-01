@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>十分钟搞懂 JavaScript 中的 原型（prototype）、原型链、继承</title>
+  </head>
+  <body>
+    <h1>
+      <a
+        href="https://au1996.gitee.io/blog/guide/prototype.html"
+        target="_blank"
+        rel="noopener noreferrer"
+        >十分钟搞懂 JavaScript 中的 原型（prototype）、原型链、继承</a
+      >
+    </h1>
+    <script>
+      const arr = []
+      const obj = {
+        name: '雪月',
+        age: 18,
+      }
+      console.log(obj.hasOwnProperty('name')) // true
+      console.log(obj.hasOwnProperty('age')) // true
+      console.log(obj.hasOwnProperty('valueOf')) // false
+
+      console.log('------')
+      console.log('name' in obj) // true
+      console.log('age' in obj) // true
+      console.log('valueOf' in obj) // true
+      console.log('dddd' in obj) // false
+
+      console.log('------')
+      console.log(arr instanceof Array) // true
+      console.log(arr instanceof Object) // true
+      console.log(obj instanceof Object) // true
+      console.log(obj instanceof Array) // false
+    </script>
+  </body>
+</html>

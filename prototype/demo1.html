@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>十分钟搞懂 JavaScript 中的 原型（prototype）、原型链、继承</title>
+  </head>
+  <body>
+    <h1>
+      <a
+        href="https://au1996.gitee.io/blog/guide/prototype.html"
+        target="_blank"
+        rel="noopener noreferrer"
+        >十分钟搞懂 JavaScript 中的 原型（prototype）、原型链、继承</a
+      >
+    </h1>
+    <script>
+      const obj = {}
+      const arr = []
+      const fn = function () {}
+
+      obj.a = '雪月'
+      arr.b = '雪月欧巴'
+      fn.c = '雪月欧尼酱'
+
+      console.log(obj.a) // 雪月
+      console.log(arr.b) // 雪月欧巴
+      console.log(fn.c) // 雪月欧尼酱
+    </script>
+  </body>
+</html>
