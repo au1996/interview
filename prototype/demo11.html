@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>十分钟搞懂JavaScript中的原型（prototype）、原型链、继承</title>
+    <style>
+      pre {
+        padding-top: 10px;
+        color: #ddd;
+        background: #333;
+        font-family: Georgia, 'Times New Roman', Times, serif;
+      }
+    </style>
+  </head>
+  <body>
+    <a
+      href="https://au1996.gitee.io/blog/guide/prototype.html#%E7%BB%84%E5%90%88%E7%BB%A7%E6%89%BF%E7%9A%84%E4%BC%98%E5%8C%96-2-%E5%AF%84%E7%94%9F%E7%BB%84%E5%90%88%E7%BB%A7%E6%89%BF"
+      target="_blank"
+      >使用 ES6 的 class 的 extends</a
+    >
+    <p>缺点：基本完美</p>
+    <pre>
+      class Parent6 {
+        constructor(name, age, school) {
+          this.name = name
+          this.age = age
+          this.school = school || '斗罗大陆'
+        }
+
+        show() {
+          console.log(this.name + this.age + '岁，' + '在' + this.school)
+        }
+      }
+      
+      class Child6 extends Parent6 {
+        constructor(name, age, school) {
+          super(name, age, school)
+        }
+      }
+      
+      const c61 = new Parent6('小明', 18, '五道口职业技术学院')
+      const c62 = new Child6('小华', 20, '北京大学')
+      const c63 = new Child6('小三', 22)
+
+      c61.show() // 小明18岁，在五道口职业技术学院
+      c62.show() // 小华20岁，在北京大学
+      c63.show() // 小三22岁，在斗罗大陆
+    </pre>
+    <script>
+      class Parent6 {
+        constructor(name, age, school) {
+          this.name = name
+          this.age = age
+          this.school = school || '斗罗大陆'
+        }
+        show() {
+          console.log(this.name + this.age + '岁，' + '在' + this.school)
+        }
+      }
+
+      class Child6 extends Parent6 {
+        constructor(name, age, school) {
+          super(name, age, school)
+        }
+      }
+
+      const c61 = new Parent6('小明', 18, '五道口职业技术学院')
+      const c62 = new Child6('小华', 20, '北京大学')
+      const c63 = new Child6('小三', 22)
+      c61.show() // 小明18岁，在五道口职业技术学院
+      c62.show() // 小华20岁，在北京大学
+      c63.show() // 小三22岁，在斗罗大陆
+    </script>
+  </body>
+</html>

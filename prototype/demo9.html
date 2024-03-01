@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>十分钟搞懂JavaScript中的原型（prototype）、原型链、继承</title>
+    <style>
+      pre {
+        padding-top: 10px;
+        color: #ddd;
+        background: #333;
+        font-family: Georgia, 'Times New Roman', Times, serif;
+      }
+    </style>
+  </head>
+  <body>
+    <a
+      href="https://au1996.gitee.io/blog/guide/prototype.html#%E7%BB%84%E5%90%88%E7%BB%A7%E6%89%BF%E7%9A%84%E4%BC%98%E5%8C%96-1"
+      target="_blank"
+      >组合继承的优化1</a
+    >
+    <p>缺点：构造函数变成了父类</p>
+    <p>
+      这里让将父类原型对象直接给到子类，父类构造函数只执行一次，而且父类属性和方法均能访问，但是子类实例的构造函数是
+      Parent4，显然这是不对的，应该是 Child4
+    </p>
+    <pre>
+      function Parent4() {
+        this.name = 'parent4'
+        this.play = [1, 2, 3]
+      }
+
+      function Child4() {
+        Parent4.call(this)
+        this.type = 'child4'
+      }
+      Child4.prototype = Parent4.prototype
+      
+      var c41 = new Child4()
+      console.log(c41)
+    </pre>
+    <script>
+      function Parent4() {
+        this.name = 'parent4'
+        this.play = [1, 2, 3]
+      }
+      function Child4() {
+        Parent4.call(this)
+        this.type = 'child4'
+      }
+      Child4.prototype = Parent4.prototype
+
+      var c41 = new Child4()
+      console.log(c41)
+    </script>
+  </body>
+</html>

@@ -3,17 +3,52 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>十分钟搞懂 JavaScript 中的 原型（prototype）、原型链、继承</title>
+    <title>十分钟搞懂JavaScript中的原型（prototype）、原型链、继承</title>
+    <style>
+      pre {
+        padding-top: 10px;
+        color: #ddd;
+        background: #333;
+        font-family: Georgia, 'Times New Roman', Times, serif;
+      }
+    </style>
   </head>
   <body>
-    <h1>
-      <a
-        href="https://au1996.gitee.io/blog/guide/prototype.html"
-        target="_blank"
-        rel="noopener noreferrer"
-        >十分钟搞懂 JavaScript 中的 原型（prototype）、原型链、继承</a
-      >
-    </h1>
+    <a
+      href="https://au1996.gitee.io/blog/guide/prototype.html#%E4%B8%89%E4%B8%AA%E6%96%B9%E6%B3%95"
+      target="_blank"
+      >三个方法</a
+    >
+    <ul>
+      <li>使用 hasOwnProperty() 来检查对象自身中是否含有该属性</li>
+      <li>使用 in 检查对象中是否含有某个属性时，如果对象中没有但是原型链中有，也会返回 true</li>
+      <li>使用 instanceof 运算符测试构造函数的 prototype 属性是否出现在对象原型链中</li>
+    </ul>
+    <p>
+      特别注意：for in 循环仅能访问原型链中 enumerable（可枚举）的属性； in 操作符不管是否可枚举
+    </p>
+    <pre>
+      const arr = []
+      const obj = {
+        name: '雪月',
+        age: 18,
+      }
+      console.log(obj.hasOwnProperty('name')) // true
+      console.log(obj.hasOwnProperty('age')) // true
+      console.log(obj.hasOwnProperty('valueOf')) // false
+
+      console.log('------')
+      console.log('name' in obj) // true
+      console.log('age' in obj) // true
+      console.log('valueOf' in obj) // true
+      console.log('dddd' in obj) // false
+
+      console.log('------')
+      console.log(arr instanceof Array) // true
+      console.log(arr instanceof Object) // true
+      console.log(obj instanceof Object) // true
+      console.log(obj instanceof Array) // false
+    </pre>
     <script>
       const arr = []
       const obj = {

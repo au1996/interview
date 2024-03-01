@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>十分钟搞懂JavaScript中的原型（prototype）、原型链、继承</title>
+    <style>
+      pre {
+        padding-top: 10px;
+        color: #ddd;
+        background: #333;
+        font-family: Georgia, 'Times New Roman', Times, serif;
+      }
+    </style>
+  </head>
+  <body>
+    <a
+      href="https://au1996.gitee.io/blog/guide/prototype.html#%E5%B0%86%E4%B8%8A%E9%9D%A2%E4%B8%A4%E7%A7%8D%E7%BB%93%E5%90%88"
+      target="_blank"
+      >使用call继承 + 借助原型链</a
+    >
+    <p>缺点：前面两个问题解决，但父类构造函数会多执行一次</p>
+    <pre>
+      function Parent3() {
+        this.name = 'parent3'
+        this.play = [1, 2, 3]
+      }
+
+      function Child3() {
+        Parent3.call(this)
+        this.type = 'child3'
+      }
+      Child3.prototype = new Parent3()
+      
+      const c31 = new Child3()
+      const c32 = new Child3()
+      c31.play.push(4)
+      
+      console.log(c31.play) // [1, 2, 3, 4]
+      console.log(c32.play) // [1, 2, 3]
+    </pre>
+    <script>
+      function Parent3() {
+        this.name = 'parent3'
+        this.play = [1, 2, 3]
+      }
+
+      function Child3() {
+        Parent3.call(this)
+        this.type = 'child3'
+      }
+      Child3.prototype = new Parent3()
+
+      const c31 = new Child3()
+      const c32 = new Child3()
+      c31.play.push(4)
+
+      console.log(c31.play) // [1, 2, 3, 4]
+      console.log(c32.play) // [1, 2, 3]
+    </script>
+  </body>
+</html>

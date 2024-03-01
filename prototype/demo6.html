@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>十分钟搞懂JavaScript中的原型（prototype）、原型链、继承</title>
+    <style>
+      pre {
+        padding-top: 10px;
+        color: #ddd;
+        background: #333;
+        font-family: Georgia, 'Times New Roman', Times, serif;
+      }
+    </style>
+  </head>
+  <body>
+    <a
+      href="https://au1996.gitee.io/blog/guide/prototype.html#%E4%BD%BF%E7%94%A8-call"
+      target="_blank"
+      >使用call继承</a
+    >
+    <p>缺点： 只能继承属性，无法继承父类原型对象中的方法</p>
+    <pre>
+      function Parent() {
+        this.name = 'parent'
+      }
+
+      Parent.prototype.show = function () {
+        console.log('show')
+      }
+
+      function Child() {
+        Parent.call(this)
+        this.type = 'child'
+      }
+
+      const c = new Child()
+
+      console.log(c) // {name: "parent", type: "child"}
+      c.show() // Uncaught TypeError: c.show is not a function
+    </pre>
+    <script>
+      function Parent() {
+        this.name = 'parent'
+      }
+
+      Parent.prototype.show = function () {
+        console.log('show')
+      }
+
+      function Child() {
+        Parent.call(this)
+        this.type = 'child'
+      }
+
+      const c = new Child()
+
+      console.log(c) // {name: "parent", type: "child"}
+      c.show() // Uncaught TypeError: c.show is not a function
+    </script>
+  </body>
+</html>

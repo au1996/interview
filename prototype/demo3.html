@@ -3,17 +3,29 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>十分钟搞懂 JavaScript 中的 原型（prototype）、原型链、继承</title>
+    <title>十分钟搞懂JavaScript中的原型（prototype）、原型链、继承</title>
+    <style>
+      pre {
+        padding-top: 10px;
+        color: #ddd;
+        background: #333;
+        font-family: Georgia, 'Times New Roman', Times, serif;
+      }
+    </style>
   </head>
   <body>
-    <h1>
-      <a
-        href="https://au1996.gitee.io/blog/guide/prototype.html"
-        target="_blank"
-        rel="noopener noreferrer"
-        >十分钟搞懂 JavaScript 中的 原型（prototype）、原型链、继承</a
-      >
-    </h1>
+    <a
+      href="https://au1996.gitee.io/blog/guide/prototype.html#%E6%A6%82%E5%BF%B5%E4%B8%89"
+      target="_blank"
+      >每个构造函数都有一个prototype原型对象</a
+    >
+    <pre>
+      const { log } = console
+      
+      log(Object.prototype)
+      log(Array.prototype)
+      log(Function.prototype)
+    </pre>
     <script>
       const { log } = console
 

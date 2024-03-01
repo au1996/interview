@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>十分钟搞懂JavaScript中的原型（prototype）、原型链、继承</title>
+    <style>
+      pre {
+        padding-top: 10px;
+        color: #ddd;
+        background: #333;
+        font-family: Georgia, 'Times New Roman', Times, serif;
+      }
+    </style>
+  </head>
+  <body>
+    <a
+      href="https://au1996.gitee.io/blog/guide/prototype.html#%E5%80%9F%E5%8A%A9%E5%8E%9F%E5%9E%8B%E9%93%BE"
+      target="_blank"
+      >借助原型链</a
+    >
+    <p>缺点： 多个实例使用同一个原型对象</p>
+    <pre>
+      function Parent2() {
+        this.name = 'parent2'
+        this.play = [1, 2, 3]
+      }
+
+      function Child2() {
+        this.type = 'child2'
+      }
+      Child2.prototype = new Parent2()
+      
+      const c2 = new Child2()
+      console.log(c2) // { type: "child2" }
+      console.log(c2.name) // parent2
+      console.log(c2.play) // [1, 2, 3]
+    </pre>
+    <p>看似没有问题，父类的方法和属性都能够访问，但实际上有一个潜在的不足。举个例子：</p>
+    <p>因为两个实例使用的是同一个原型对象, 所以改变c21的play属性，c22的play属性也跟着变了</p>
+    <pre>
+      const c21 = new Child2()
+      const c22 = new Child2()
+      
+      c21.play.push(4)
+      console.log(c22.play) // [1, 2, 3, 4]
+      console.log(c21.play === c22.play) // true
+    </pre>
+    <script>
+      function Parent2() {
+        this.name = 'parent2'
+        this.play = [1, 2, 3]
+      }
+      function Child2() {
+        this.type = 'child2'
+      }
+      Child2.prototype = new Parent2()
+
+      const c2 = new Child2()
+      console.log(c2) // { type: "child2" }
+      console.log(c2.name) // parent2
+      console.log(c2.play) // [1, 2, 3]
+    </script>
+
+    <script>
+      // const c21 = new Child2()
+      // const c22 = new Child2()
+
+      // c21.play.push(4)
+      // console.log(c22.play) // [1, 2, 3, 4]
+      // console.log(c21.play === c22.play) // true
+    </script>
+  </body>
+</html>
