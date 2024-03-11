@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>全局上下文</title>
+  </head>
+  <body>
+    <h1>全局上下文</h1>
+    <a href="https://juejin.cn/post/6844903704466833421" target="_blank" rel="noopener noreferrer"
+      >文章链接</a
+    >
+    <ol>
+      <li>可以通过 this 引用，在浏览器中，全局对象就是 Window 对象。</li>
+      <script>
+        console.log(this)
+      </script>
+      <li>全局对象是由 Object 构造函数实例化的一个对象。</li>
+      <script>
+        console.log(this instanceof Object)
+      </script>
+      <li>预定义了一堆，嗯，一大堆函数和属性。</li>
+      <script>
+        // 都能生效
+        console.log(Math.random())
+        console.log(this.Math.random())
+      </script>
+      <li>作为全局变量的宿主。</li>
+      <script>
+        var a = 'a'
+        console.log(this.a)
+      </script>
+      <li>客户端 JavaScript 中，全局对象有 window 属性指向自身</li>
+      <script>
+        var a = 'aa'
+        console.log(window.a)
+
+        this.window.b = 'bb'
+        console.log(this.b)
+      </script>
+    </ol>
+  </body>
+</html>

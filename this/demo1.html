@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <a href="https://github.com/mqyqingfeng/Blog/issues/7" target="_blank">文章链接</a>
+    <ol>
+      <li>作为对象调用时，指向该对象 obj.b(); // 指向obj</li>
+      <li>作为函数调用, var b = obj.b; b(); // 指向全局window</li>
+      <li>作为构造函数调用 var b = new Fun(); // this指向当前实例对象</li>
+      <li>作为call与apply调用 obj.b.apply(object, []); // this指向当前的object</li>
+    </ol>
+    <p>但是！如何解释下面这个例子呢？</p>
+    <script>
+      var value = 1
+
+      var foo = {
+        value: 2,
+        bar: function () {
+          return this.value
+        },
+      }
+      console.log(foo.bar()) // 2
+      console.log((false || foo.bar)()) // 1
+    </script>
+  </body>
+</html>

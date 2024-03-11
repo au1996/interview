@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>闭包</title>
+  </head>
+  <body>
+    <a href="https://github.com/mqyqingfeng/Blog/issues/6" target="_blank" rel="noopener noreferrer"
+      >链接</a
+    >
+    <p>什么是自由变量呢?</p>
+    <p>自由变量是指在函数中使用的，但既不是函数参数也不是函数的局部变量的变量。</p>
+    <p>从技术的角度讲，所有的JavaScript函数都是闭包</p>
+    <p>从实践角度：以下函数才算是闭包</p>
+    <ol>
+      <li>在代码中引用了自由变量</li>
+      <li>即使创建它的上下文已经销毁，它仍然存在（比如，内部函数从父函数中返回）</li>
+    </ol>
+    <script>
+      function foo() {
+        var a = 'aa'
+        let b = 'bb'
+        function bar() {
+          const c = 'cc'
+          const d = 'dd'
+          console.log(a)
+          console.log(b)
+          function car() {
+            console.log(c)
+          }
+          console.dir(car)
+        }
+        bar()
+        console.dir(bar)
+      }
+
+      foo()
+    </script>
+  </body>
+</html>
