@@ -3,41 +3,79 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>全局上下文</title>
+    <title>变量提升</title>
+    <link rel="stylesheet" href="https://au1996.github.io/interview/css/index.css" />
   </head>
   <body>
-    <h1>全局上下文</h1>
-    <a href="https://juejin.cn/post/6844903704466833421" target="_blank" rel="noopener noreferrer"
-      >文章链接</a
-    >
-    <ol>
-      <li>可以通过 this 引用，在浏览器中，全局对象就是 Window 对象。</li>
-      <script>
-        console.log(this)
-      </script>
-      <li>全局对象是由 Object 构造函数实例化的一个对象。</li>
-      <script>
-        console.log(this instanceof Object)
-      </script>
-      <li>预定义了一堆，嗯，一大堆函数和属性。</li>
-      <script>
-        // 都能生效
-        console.log(Math.random())
-        console.log(this.Math.random())
-      </script>
-      <li>作为全局变量的宿主。</li>
-      <script>
-        var a = 'a'
-        console.log(this.a)
-      </script>
-      <li>客户端 JavaScript 中，全局对象有 window 属性指向自身</li>
-      <script>
-        var a = 'aa'
-        console.log(window.a)
+    <p>
+      <a
+        href="https://github.com/mqyqingfeng/Blog/issues/5"
+        target="_blank"
+        rel="noopener noreferrer"
+        >文章链接</a
+      >
+    </p>
+    <p>
+      <a
+        href="https://au1996.github.io/interview/variable/demo2.html"
+        target="_blank"
+        rel="noopener noreferrer"
+        >全局上下文</a
+      >
+    </p>
+    <pre>
+      // 这段可以证明函数提升优先于变量声明提升
+      console.log(auTest)
 
-        this.window.b = 'bb'
-        console.log(this.b)
-      </script>
-    </ol>
+      var auTest = 'auTest'
+
+      function auTest() {}
+    </pre>
+    <script>
+      // 这段可以证明函数提升优先于变量声明提升
+      console.log(auTest)
+
+      var auTest = 'auTest'
+
+      function auTest() {}
+    </script>
+
+    <pre>
+      // 进入执行上下文时，首先会处理函数声明，其次会处理变量声明，
+      // 如果变量名称跟已经声明的形式参数或函数相同，则变量声明不会覆盖已经存在的这类属性。
+      console.log(foo)
+
+      function foo() {}
+
+      var foo = 'foo'
+
+      // 这段说明变量赋值是可以改变值的=====声明归声明、赋值归赋值、搞清楚
+      console.log(foo)
+    </pre>
+    <script>
+      // 进入执行上下文时，首先会处理函数声明，其次会处理变量声明，
+      // 如果变量名称跟已经声明的形式参数或函数相同，则变量声明不会覆盖已经存在的这类属性。
+      console.log(foo)
+
+      function foo() {}
+
+      var foo = 'foo'
+
+      // 这段说明变量赋值是可以改变值的=====声明归声明、赋值归赋值、搞清楚
+      console.log(foo)
+    </script>
+
+    <pre>
+      // let、const 会报错，不会有上面那种乱七八糟的声明覆盖问题
+      let car = 'car'
+      console.log(car)
+      let car = 'new car'
+    </pre>
+    <script>
+      // let、const 会报错，不会有上面那种乱七八糟的声明覆盖问题
+      // let car = 'car'
+      // console.log(car)
+      // let car = 'new car'
+    </script>
   </body>
 </html>

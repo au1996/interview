@@ -4,8 +4,29 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <link rel="stylesheet" href="https://au1996.github.io/interview/css/index.css" />
   </head>
   <body>
+    <p>印证了：作为构造函数调用 var b = new Fun(); // this指向当前实例对象</p>
+    <pre>
+      function Foo() {
+        var getName = function () {
+          console.log(1)
+        }
+        return this
+      }
+
+      function getName() {
+        console.log(5)
+      }
+
+      Foo.prototype.getName = function () {
+        console.log(3)
+      }
+
+      Foo().getName() // 5
+      new Foo().getName() //3
+    </pre>
     <script>
       function Foo() {
         var getName = function () {

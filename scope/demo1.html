@@ -4,11 +4,33 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>闭包</title>
+    <link rel="stylesheet" href="https://au1996.github.io/interview/css/index.css" />
   </head>
   <body>
-    <a href="https://github.com/mqyqingfeng/Blog/issues/6" target="_blank" rel="noopener noreferrer"
-      >链接</a
-    >
+    <p>
+      <a
+        href="https://github.com/mqyqingfeng/Blog/issues/6"
+        target="_blank"
+        rel="noopener noreferrer"
+        >作用域文章</a
+      >
+    </p>
+    <p>
+      <a
+        href="https://github.com/mqyqingfeng/Blog/issues/9"
+        target="_blank"
+        rel="noopener noreferrer"
+        >闭包文章</a
+      >
+    </p>
+    <p>
+      <a
+        href="https://au1996.github.io/interview/scope/demo2.html"
+        target="_blank"
+        rel="noopener noreferrer"
+        >闭包题</a
+      >
+    </p>
     <p>什么是自由变量呢?</p>
     <p>自由变量是指在函数中使用的，但既不是函数参数也不是函数的局部变量的变量。</p>
     <p>从技术的角度讲，所有的JavaScript函数都是闭包</p>
@@ -17,6 +39,30 @@
       <li>在代码中引用了自由变量</li>
       <li>即使创建它的上下文已经销毁，它仍然存在（比如，内部函数从父函数中返回）</li>
     </ol>
+    <pre>
+      function foo() {
+        var a = 'aa'
+        let b = 'bb'
+
+        function bar() {
+          const c = 'cc'
+          const d = 'dd'
+
+          console.log(a)
+          console.log(b)
+
+          function car() {
+            console.log(c)
+          }
+          console.dir(car)
+        }
+
+        bar()
+        console.dir(bar)
+      }
+
+      foo()
+    </pre>
     <script>
       function foo() {
         var a = 'aa'
