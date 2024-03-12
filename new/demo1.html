@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="https://au1996.github.io/interview/css/index.css" />
+  </head>
+  <body>
+    <h1>new</h1>
+    <p>
+      <a
+        href="https://github.com/mqyqingfeng/Blog/issues/13"
+        target="_blank"
+        rel="noopener noreferrer"
+        >文章链接</a
+      >
+    </p>
+    <pre>
+      function myNew() {
+        // 创建一个新对象
+        const obj = {}
+        // 获取构造函数
+        const Constructor = [].shift.call(arguments)
+        // 链接到原型
+        obj.__proto__ = Constructor.prototype
+        // 绑定 this 并执行构造函数
+        const result = Constructor.apply(obj, arguments)
+        // 确保 new 出来的是个对象
+        return typeof result === 'object' ? result : obj
+      }
+    </pre>
+    <script>
+      function myNew() {
+        // 创建一个新对象
+        const obj = {}
+        // 获取构造函数
+        const Constructor = [].shift.call(arguments)
+        // 链接到原型
+        obj.__proto__ = Constructor.prototype
+        // 绑定 this 并执行构造函数
+        const result = Constructor.apply(obj, arguments)
+        // 确保 new 出来的是个对象
+        return typeof result === 'object' ? result : obj
+      }
+    </script>
+    <script>
+      function Person(name, age) {
+        this.car = '兰博基尼'
+        this.name = name
+        this.age = age
+      }
+
+      Person.prototype.say = function () {
+        console.log('我是' + this.name + '，今年' + this.age + '岁')
+      }
+
+      const person = myNew(Person, '雪月', 18)
+      person.say()
+      console.log(person)
+    </script>
+  </body>
+</html>
