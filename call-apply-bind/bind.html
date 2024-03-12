@@ -17,9 +17,9 @@
       >
     </p>
     <pre>
-      Function.prototype.bind2 = function (context) {
+      Function.prototype.myBind = function (context) {
         if (typeof this !== 'function') {
-          throw new Error('Function.prototype.bind - what is trying to be bound is not callable')
+          throw new Error('Function.prototype.myBind - what is trying to be bound is not callable')
         }
 
         var self = this
@@ -63,7 +63,7 @@
       console.log(obj.friend)
     </pre>
     <script>
-      Function.prototype.bind2 = function (context) {
+      Function.prototype.myBind = function (context) {
         if (typeof this !== 'function') {
           throw new Error('Function.prototype.bind - what is trying to be bound is not callable')
         }
@@ -101,7 +101,7 @@
       }
       bar.prototype.friend = 'gaogao'
 
-      var bindFoo = bar.bind2(foo, 'xueyue')
+      var bindFoo = bar.myBind(foo, 'xueyue')
       var obj = new bindFoo(18)
 
       console.log('habit', obj.habit)

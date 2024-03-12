@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="https://au1996.github.io/interview/css/index.css" />
+  </head>
+  <body>
+    <h1>call</h1>
+    <p>
+      <a
+        href="https://segmentfault.com/a/1190000018017796"
+        target="_blank"
+        rel="noopener noreferrer"
+        >文章链接</a
+      >
+    </p>
+    <pre>
+      Function.prototype.myCall = function (context) {
+        if (typeof this !== 'function') {
+          throw new TypeError('Function.prototype.myCall - what is trying to be bound is not callable')
+        }
+
+        context = context || window
+        context._fn = this
+        var args = Array.prototype.slice.call(arguments, 1)
+        var result = context._fn(...args)
+        delete context._fn
+        return result
+      }
+    </pre>
+    <pre>
+      function fn1(age, car) {
+        console.log(this.name)
+        console.log(age)
+        console.log(car)
+      }
+
+      const obj = {
+        name: '雪月',
+      }
+
+      fn1.myCall(obj, 18, '保时捷')
+    </pre>
+    <script>
+      Function.prototype.myCall = function (context) {
+        if (typeof this !== 'function') {
+          throw new TypeError(
+            'Function.prototype.myCall - what is trying to be bound is not callable'
+          )
+        }
+
+        context = context || window
+        context._fn = this
+        var args = Array.prototype.slice.call(arguments, 1)
+        var result = context._fn(...args)
+        delete context._fn
+        return result
+      }
+    </script>
+    <script>
+      function fn1(age, car) {
+        console.log(this.name)
+        console.log(age)
+        console.log(car)
+      }
+
+      const obj = {
+        name: '雪月',
+      }
+
+      fn1.myCall(obj, 18, '保时捷')
+    </script>
+  </body>
+</html>

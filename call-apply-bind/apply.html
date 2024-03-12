@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="https://au1996.github.io/interview/css/index.css" />
+  </head>
+  <body>
+    <h1>apply</h1>
+    <p>
+      <a
+        href="https://segmentfault.com/a/1190000018017796"
+        target="_blank"
+        rel="noopener noreferrer"
+        >文章链接</a
+      >
+    </p>
+    <pre>
+      Function.prototype.myApply = function (context) {
+        if (typeof this !== 'function') {
+          throw new TypeError(
+            'Function.prototype.myApply - what is trying to be bound is not callable'
+          )
+        }
+
+        context = context || window
+        context._fn = this
+
+        let result
+        if (arguments[1]) {
+          result = context._fn(...arguments[1])
+        } else {
+          result = context._fn()
+        }
+
+        delete context._fn
+        return result
+      }
+    </pre>
+    <pre>
+      function fn1(age, car) {
+        console.log(this.name)
+        console.log(age)
+        console.log(car)
+      }
+
+      const obj = {
+        name: '雪月',
+      }
+
+      fn1.myApply(obj, [20, '法拉利'])
+    </pre>
+    <script>
+      Function.prototype.myApply = function (context) {
+        if (typeof this !== 'function') {
+          throw new TypeError(
+            'Function.prototype.myApply - what is trying to be bound is not callable'
+          )
+        }
+
+        context = context || window
+        context._fn = this
+
+        let result
+        if (arguments[1]) {
+          result = context._fn(...arguments[1])
+        } else {
+          result = context._fn()
+        }
+
+        delete context._fn
+        return result
+      }
+    </script>
+    <script>
+      function fn1(age, car) {
+        console.log(this.name)
+        console.log(age)
+        console.log(car)
+      }
+
+      const obj = {
+        name: '雪月',
+      }
+
+      fn1.myApply(obj, [20, '法拉利'])
+    </script>
+  </body>
+</html>
