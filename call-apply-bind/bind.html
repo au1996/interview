@@ -24,7 +24,6 @@
 
         var self = this
         var args = Array.prototype.slice.call(arguments, 1)
-
         var fNull = function () {}
 
         var fBound = function () {
@@ -34,7 +33,8 @@
           // 当作为普通函数时，this 指向 window，此时结果为 false，将绑定函数的 this 指向 context
           return self.apply(this instanceof fBound ? this : context, args.concat(bindArgs))
         }
-
+        // 修改返回函数的 prototype 为绑定函数的 prototype，实例就可以继承绑定函数的原型中的值
+        // 使用 fNull函数中转，避免直接修改绑定函数的 prototype
         fNull.prototype = this.prototype
         fBound.prototype = new fNull()
         return fBound
@@ -70,7 +70,6 @@
 
         var self = this
         var args = Array.prototype.slice.call(arguments, 1)
-
         var fNull = function () {}
 
         var fBound = function () {
@@ -79,7 +78,6 @@
           console.log(111, this instanceof fBound, context)
           return self.apply(this instanceof fBound ? this : context, args.concat(bindArgs))
         }
-
         fNull.prototype = this.prototype
         fBound.prototype = new fNull()
         return fBound
