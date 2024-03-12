@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="https://au1996.github.io/interview/css/index.css" />
+  </head>
+  <body>
+    <h1>浮点数精度</h1>
+    <p>
+      <a
+        href="https://github.com/mqyqingfeng/Blog/issues/155"
+        target="_blank"
+        rel="noopener noreferrer"
+        >文章链接</a
+      >
+    </p>
+    <pre>
+      // 精度问题
+      console.log(0.1 + 0.2)
+      console.log(0.6 - 0.5)
+
+      // 二进制转十进制
+      console.log(parseInt(1100100, 2))
+
+      // 十进制转二进制
+      console.log(parseFloat(0.1).toString(2))
+
+      // 以指定的精度返回该数值对象的字符串表示
+      console.log((0.1 + 0.2).toPrecision(21))
+      console.log((0.3).toPrecision(21))
+    </pre>
+    <script>
+      // 精度问题
+      console.log(0.1 + 0.2)
+      console.log(0.6 - 0.5)
+
+      // 二进制转十进制
+      console.log(parseInt(1100100, 2))
+
+      // 十进制转二进制
+      console.log(parseFloat(0.1).toString(2))
+
+      // 以指定的精度返回该数值对象的字符串表示
+      console.log((0.1 + 0.2).toPrecision(21))
+      console.log((0.3).toPrecision(21))
+    </script>
+  </body>
+</html>
