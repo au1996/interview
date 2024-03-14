@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="https://au1996.github.io/interview/css/index.css" />
+  </head>
+  <body>
+    <p>
+      <a href="https://juejin.cn/post/6844904063570542599" target="_blank" rel="noopener noreferrer"
+        >文章链接</a
+      >
+    </p>
+    <p>
+      Promise
+      必须为以下三种状态之一：等待态（Pending）、执行态（Fulfilled）和拒绝态（Rejected）。一旦Promise
+      被 resolve 或 reject，不能再迁移至其他任何状态（即状态 immutable）。
+    </p>
+    <pre>
+      new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve(1)
+          resolve(2)
+          reject(3)
+        }, 500)
+      })
+        .then(
+          (data) => {
+            console.log('result1', data)
+          },
+          (data2) => {
+            console.log('result2', data2)
+          }
+        )
+        .then((data3) => {
+          console.log('result3', data3)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+      // result1 1
+      // result3 undefined
+    </pre>
+    <script>
+      new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve(1)
+          resolve(2)
+          reject(3)
+        }, 500)
+      })
+        .then(
+          (data) => {
+            console.log('result1', data)
+          },
+          (data2) => {
+            console.log('result2', data2)
+          }
+        )
+        .then((data3) => {
+          console.log('result3', data3)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+      // result1 1
+      // result3 undefined
+    </script>
+  </body>
+</html>
