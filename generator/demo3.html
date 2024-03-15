@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="https://au1996.github.io/interview/css/index.css" />
+  </head>
+  <body>
+    <h1>next方法可以有参数</h1>
+    <p>
+      <a href="https://zhuanlan.zhihu.com/p/216060145" target="_blank" rel="noopener noreferrer"
+        >文章链接</a
+      >
+    </p>
+    <h4>
+      一句话说，next方法参数的作用，是为上一个yield语句赋值。由于yield永远返回undefined，这时候，如果有了next方法的参数，yield就被赋了值，比如下例，原本a变量的值是0，但是有了next的参数，a变量现在等于next的参数，也就是11。
+    </h4>
+    <h4>
+      next方法的参数每次覆盖的一定是undefined。next在没有参数的时候，函数体里面写let xx = yield
+      oo;是没意义的，因为xx一定是undefined
+    </h4>
+    <p>
+      首先说，console.log(gen.next());的作用就是输出了{value: 1, done: false}，注意var a = yield
+      o++;，由于赋值运算是先计算等号右边，然后赋值给左边，所以目前阶段，只运算了yield
+      o++，并没有赋值。
+    </p>
+    <p>
+      然后说，console.log(gen.next(11));的作用，首先是执行gen.next(11)，得到什么？首先：把第一个yield
+      o++重置为11，然后，赋值给a，再然后，console.log('a = ' + a);，打印a = 11，继续然后，yield
+      o++，得到2，最后打印出来。
+    </p>
+    <p>
+      从这我们看出了端倪：带参数跟不带参数的区别是，带参数的情况，首先第一步就是将上一个yield语句重置为参数值，然后再照常执行剩下的语句。总之，区别就是先有一步先重置值，接下来其他全都一样。
+    </p>
+    <p>
+      这个功能有很重要的语法意义，通过next方法的参数，就有办法在Generator函数开始运行之后，继续向函数体内部注入值。也就是说，可以在Generator函数运行的不同阶段，从外部向内部注入不同的值，从而调整函数行为。
+    </p>
+    <p>
+      提问：第一个.next()可以有参数么？
+      答：设这样的参数没任何意义，因为第一个.next()的前面没有yield语句。
+    </p>
+    <pre>
+      function* g() {
+        var o = 1
+        var a = yield o++
+        console.log('a = ' + a) // a = 11
+        var b = yield o++
+      }
+      var gen = g()
+
+      console.log(gen.next()) // {value: 1, done: false}
+      console.log('------')
+      console.log(gen.next(11)) // {value: 2, done: false}
+    </pre>
+    <script>
+      function* g() {
+        var o = 1
+        var a = yield o++
+        console.log('a = ' + a) // a = 11
+        var b = yield o++
+      }
+      var gen = g()
+
+      console.log(gen.next()) // {value: 1, done: false}
+      console.log('------')
+      console.log(gen.next(11)) // {value: 2, done: false}
+    </script>
+  </body>
+</html>

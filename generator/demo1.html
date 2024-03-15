@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="https://au1996.github.io/interview/css/index.css" />
+  </head>
+  <body>
+    <h1>generator的使用</h1>
+    <p>
+      <a href="https://zhuanlan.zhihu.com/p/216060145" target="_blank" rel="noopener noreferrer"
+        >文章链接</a
+      >
+    </p>
+    <p>所以可以看出，Generator 函数的特点就是</p>
+    <ol>
+      <li>分段执行，可以暂停</li>
+      <li>可以控制阶段和每个阶段的返回值</li>
+      <li>可以知道是否执行到结尾</li>
+    </ol>
+    <pre>
+      function* gen() {
+        yield 1
+        yield 2
+        yield 3
+        return '雪月'
+      }
+
+      const g = gen()
+      console.log(g.next())
+      console.log(g.next())
+      console.log(g.next())
+      console.log(g.next())
+    </pre>
+    <script>
+      function* gen() {
+        yield 1
+        yield 2
+        yield 3
+        return '雪月'
+      }
+
+      const g = gen()
+      console.log(g.next())
+      console.log(g.next())
+      console.log(g.next())
+      console.log(g.next())
+    </script>
+  </body>
+</html>

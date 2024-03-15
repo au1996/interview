@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="https://au1996.github.io/interview/css/index.css" />
+  </head>
+  <body>
+    <h1>for of 循环</h1>
+    <p>
+      <a href="https://zhuanlan.zhihu.com/p/216060145" target="_blank" rel="noopener noreferrer"
+        >文章链接</a
+      >
+    </p>
+    <p>for...of循环可以自动遍历Generator函数时生成的Iterator对象，且此时不再需要调用next方法。</p>
+    <pre>
+      function* foo() {
+        yield 1
+        yield 2
+        yield 3
+        yield 4
+        yield 5
+        return 6
+      }
+
+      let a = foo()
+
+      for (let v of a) {
+        console.log(v)
+      }
+      // 1 2 3 4 5
+    </pre>
+    <p>利用Generator函数和for...of循环，实现斐波那契数列的例子。</p>
+    <pre>
+      function* fibonacci() {
+        let [prev, curr] = [0, 1]
+        for (;;) {
+          [prev, curr] = [curr, prev + curr]
+          yield curr
+        }
+      }
+
+      for (let n of fibonacci()) {
+        if (n > 1000) break
+        console.log(n)
+      }
+    </pre>
+    <script>
+      function* foo() {
+        yield 1
+        yield 2
+        yield 3
+        yield 4
+        yield 5
+        return 6
+      }
+
+      let a = foo()
+
+      for (let v of a) {
+        console.log(v)
+      }
+      // 1 2 3 4 5
+    </script>
+    <script>
+      console.log('------')
+    </script>
+    <script>
+      function* fibonacci() {
+        let [prev, curr] = [0, 1]
+        for (;;) {
+          ;[prev, curr] = [curr, prev + curr]
+          yield curr
+        }
+      }
+
+      for (let n of fibonacci()) {
+        if (n > 1000) break
+        console.log(n)
+      }
+    </script>
+  </body>
+</html>

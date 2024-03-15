@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="https://au1996.github.io/interview/css/index.css" />
+  </head>
+  <body>
+    <h1>每个迭代器之间互不干扰，作用域独立</h1>
+    <p>
+      <a href="https://zhuanlan.zhihu.com/p/216060145" target="_blank" rel="noopener noreferrer"
+        >文章链接</a
+      >
+    </p>
+    <pre>
+      function* g() {
+        var o = 1
+        yield o++
+        yield o++
+        yield o++
+      }
+      var gen = g()
+
+      console.log(gen.next()) // {value: 1, done: false}
+
+      var xxx = g()
+
+      console.log(gen.next()) // {value: 2, done: false}
+      console.log(xxx.next()) // {value: 1, done: false}
+      console.log(gen.next()) // {value: 3, done: false}
+    </pre>
+    <script>
+      function* g() {
+        var o = 1
+        yield o++
+        yield o++
+        yield o++
+      }
+      var gen = g()
+
+      console.log(gen.next()) // {value: 1, done: false}
+
+      var xxx = g()
+
+      console.log(gen.next()) // {value: 2, done: false}
+      console.log(xxx.next()) // {value: 1, done: false}
+      console.log(gen.next()) // {value: 3, done: false}
+    </script>
+  </body>
+</html>
