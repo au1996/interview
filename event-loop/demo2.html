@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <link rel="stylesheet" href="https://au1996.github.io/interview/css/index.css" />
   </head>
   <body>
     <h1>消息队列的优先级：</h1>
@@ -14,6 +15,46 @@
     <h3>延时队列第四</h3>
     <button id="begin">先点击开始</button>
     <button id="interaction">3秒内点击此处交互</button>
+    <pre>
+      // 死循环指定的时间
+      function delay(duration) {
+        var start = Date.now()
+        while (Date.now() - start < duration) {}
+      }
+
+      function addDelay() {
+        console.log('添加延时队列')
+        setTimeout(() => {
+          console.log('延时队列执行')
+        }, 100)
+      }
+
+      function addNetWork() {
+        console.log('添加网络队列')
+        fetch('./demo2.js').then(() => {
+          console.log('网络队列执行')
+        })
+      }
+
+      function addInteraction() {
+        console.log('添加交互队列')
+        interaction.onclick = function () {
+          console.log('交互队列执行')
+        }
+        delay(3000)
+      }
+
+      begin.onclick = function () {
+        addDelay()
+        addNetWork()
+        addInteraction()
+        console.log('添加微任务')
+        Promise.resolve().then(() => {
+          console.log('微任务执行')
+        })
+        console.log('===========')
+      }
+    </pre>
     <script>
       // 死循环指定的时间
       function delay(duration) {

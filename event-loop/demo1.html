@@ -5,9 +5,26 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <link rel="stylesheet" href="https://au1996.github.io/interview/css/index.css" />
   </head>
   <body>
-    <button>change</button>
+    <button>点击这里</button><span>1秒内多点几次会有不一样的结果</span>
+    <pre>
+      var h1 = document.querySelector('h1')
+      var btn = document.querySelector('button')
+
+      // 死循环指定的时间
+      function delay(duration) {
+        var start = Date.now()
+        while (Date.now() - start < duration) {}
+      }
+
+      let count = 1
+      btn.onclick = function () {
+        h1.textContent = '雪月真帅！+' + count++
+        delay(1000)
+      }
+    </pre>
     <script>
       var h1 = document.querySelector('h1')
       var btn = document.querySelector('button')
