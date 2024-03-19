@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="https://au1996.github.io/interview/css/index.css" />
+  </head>
+  <body>
+    <h1>instanceof</h1>
+    <p>
+      <a href="https://juejin.cn/post/6844903613584654344" target="_blank" rel="noopener noreferrer"
+        >文章链接</a
+      >
+    </p>
+    <pre>
+      function myInstanceof(left, right) {
+        if (typeof left !== 'object' || left === null) return false
+
+        let proto = Object.getPrototypeOf(left)
+        while (true) {
+          if (proto === null) return false
+          if (proto === right.prototype) return true
+          proto = Object.getPrototypeOf(proto)
+        }
+      }
+
+      console.log(myInstanceof([], Array)) // true
+      console.log(myInstanceof([], Object)) // true
+      console.log(myInstanceof({}, Array)) // false
+      console.log(myInstanceof({}, Object)) // true
+    </pre>
+    <script>
+      function myInstanceof(left, right) {
+        if (typeof left !== 'object' || left === null) return false
+
+        let proto = Object.getPrototypeOf(left)
+        while (true) {
+          if (proto === null) return false
+          if (proto === right.prototype) return true
+          proto = Object.getPrototypeOf(proto)
+        }
+      }
+
+      console.log(myInstanceof([], Array)) // true
+      console.log(myInstanceof([], Object)) // true
+      console.log(myInstanceof({}, Array)) // false
+      console.log(myInstanceof({}, Object)) // true
+    </script>
+  </body>
+</html>
