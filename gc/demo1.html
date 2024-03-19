@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="https://au1996.github.io/interview/css/index.css" />
+  </head>
+  <body>
+    <h1>内存泄露</h1>
+    <p>
+      <a
+        href="https://segmentfault.com/a/1190000020231307"
+        target="_blank"
+        rel="noopener noreferrer"
+        >文章链接</a
+      >
+    </p>
+    <p>有泄露</p>
+    <pre>
+      let map = new Map()
+      let key = new Array(5 * 1024 * 1024)
+      map.set(key, 'is key')
+      key = null
+      console.log('map', map)
+    </pre>
+
+    <p>无泄露</p>
+    <pre>
+      let map2 = new Map()
+      let key2 = new Array(5 * 1024 * 1024)
+      map2.set(key2, 'is key')
+      map2.delete(key2)
+      key2 = null
+      console.log('map2', map2)
+    </pre>
+    <script>
+      let map = new Map()
+      let key = new Array(5 * 1024 * 1024)
+      map.set(key, 'is key')
+      key = null
+      console.log('map', map)
+    </script>
+
+    <script>
+      let map2 = new Map()
+      let key2 = new Array(5 * 1024 * 1024)
+      map2.set(key2, 'is key')
+      map2.delete(key2)
+      key2 = null
+      console.log('map2', map2)
+    </script>
+  </body>
+</html>
