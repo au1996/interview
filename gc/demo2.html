@@ -5,10 +5,10 @@
     <link rel="stylesheet" href="https://au1996.github.io/interview/css/index.css" />
   </head>
   <body>
-    <h1>内存泄露判断</h1>
+    <h1>内存泄露控制台判断演示</h1>
     <p>
       <a
-        href="https://segmentfault.com/a/1190000020231307#item-6"
+        href="https://segmentfault.com/a/1190000020231307#item-6-12"
         target="_blank"
         rel="noopener noreferrer"
         >文章链接</a
@@ -18,6 +18,29 @@
       <button id="run">运行</button>
       <button id="stop">停止</button>
     </div>
+    <pre>
+      const arr = []
+      for (let i = 0; i < 200000; i++) {
+        arr.push(i)
+      }
+      let newArr = []
+
+      function run() {
+        newArr = newArr.concat(arr)
+      }
+
+      let clearRun
+
+      document.querySelector('#run').onclick = function () {
+        clearRun = setInterval(() => {
+          run()
+        }, 1000)
+      }
+
+      document.querySelector('#stop').onclick = function () {
+        clearInterval(clearRun)
+      }
+    </pre>
     <script>
       const arr = []
       for (let i = 0; i < 200000; i++) {
