@@ -45,8 +45,8 @@
       }
     </script>
     <script>
-      function Person(name, age) {
-        this.car = '兰博基尼'
+      function Person(name, age, car) {
+        this.car = car || '兰博基尼'
         this.name = name
         this.age = age
       }
@@ -58,6 +58,10 @@
       const person = myNew(Person, '雪月', 18)
       person.say()
       console.log(person)
+
+      const personNative = new Person('原生', 24, '保时捷')
+      personNative.say()
+      console.log(personNative)
     </script>
   </body>
 </html>
