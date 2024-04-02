@@ -42,10 +42,9 @@
     </pre>
 
     <pre>
-      var value = 2
-
+      var value = 'window value'
       var foo = {
-        value: 1,
+        value: 'foo value',
       }
 
       function bar(name, age) {
@@ -75,7 +74,7 @@
         var fBound = function () {
           var bindArgs = Array.prototype.slice.call(arguments)
           console.log(111, this instanceof fNull, this)
-          console.log(111, this instanceof fBound, context)
+          console.log(222, this instanceof fBound, context)
           return self.apply(this instanceof fBound ? this : context, args.concat(bindArgs))
         }
         fNull.prototype = this.prototype
@@ -85,17 +84,16 @@
     </script>
 
     <script>
-      var value = 2
-
+      var value = 'window value'
       var foo = {
-        value: 1,
+        value: 'foo value',
       }
 
       function bar(name, age) {
         this.habit = 'cf'
         console.log('value', this.value)
-        console.log({ name })
-        console.log({ age })
+        console.log('name', name)
+        console.log('age', age)
       }
       bar.prototype.friend = 'gaogao'
 
@@ -105,6 +103,7 @@
       console.log('habit', obj.habit)
       console.log('friend', obj.friend)
 
+      // 测试参数age
       // bindFoo(666)
     </script>
   </body>

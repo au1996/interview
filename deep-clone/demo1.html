@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>深拷贝</title>
+    <link rel="stylesheet" href="https://au1996.github.io/interview/css/index.css" />
+  </head>
+  <body>
+    <a
+      href="https://au1996.gitee.io/blog/frontend/javaScript/deepClone.html"
+      target="_blank"
+      rel="noopener noreferrer"
+      >文章链接</a
+    >
+    <pre>
+      function deepClone(target) {
+        if (typeof target === 'object' && target !== null) {
+          return JSON.parse(JSON.stringify(target))
+        } else {
+          return target
+        }
+      }
+    </pre>
+    <pre>
+      // 类型被转换：Date引用类型会变成字符串
+      // 键值会消失：当值为Function、Undefined、Symbol 这几种类型
+      // 键值变成空对象：当值为Map、Set、RegExp 这几种类型
+      // 无法拷贝：不可枚举属性、对象的原型链属性
+      // 如果存在BigInt类型：执行会报错
+      // 如果设置循环引用：执行会报错
+    </pre>
+    <p>
+      <span>补充：详细内容请查看官方文档：</span>
+      <a
+        href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify"
+        target="_blank"
+        rel="noopener noreferrer"
+        >JSON.stringify()</a
+      >
+    </p>
+    <p>
+      <a
+        href="https://au1996.github.io/interview/deep-clone/demo2.html"
+        target="_blank"
+        rel="noopener noreferrer"
+        >简化版</a
+      >
+    </p>
+    <script src="./demo1.js"></script>
+    <script>
+      const xy = {
+        name: '雪月',
+        age: 18,
+      }
+
+      // 测试各种类型
+      const obj = {
+        num: 0,
+        str: 'str',
+        bool: true,
+        unf: undefined,
+        nul: null,
+        sym: Symbol('sym'),
+        xy,
+        cars: ['保时捷', '法拉利', xy],
+        func: function () {
+          console.log('im fn', this)
+          this.func2.call(xy)
+        },
+        func2: function (name) {
+          console.log('name is', name)
+          console.log('im fn2', this)
+        },
+        date: new Date(),
+        reg: new RegExp('/im reg/ig'),
+        map: new Map().set('key', 'keyvalue'),
+        set: new Set().add('set'),
+        [Symbol('key')]: 1,
+      }
+
+      // 添加不可枚举属性
+      Object.defineProperty(obj, 'unenumerable', {
+        enumerable: false,
+        value: '不可枚举属性',
+      })
+
+      // 设置原型对象
+      Object.setPrototypeOf(obj, {
+        proto_one: 'obj_proto_one',
+        proto_two: 'obj_proto_two',
+      })
+
+      // 设置循环引用：会报错
+      // obj.loop = obj
+      // 设置BigInt：会报错
+      // obj.bigint = BigInt(666n)
+
+      const deepObj = deepClone(obj)
+
+      console.log('obj：', obj)
+      console.log('deepObj：', deepObj)
+    </script>
+  </body>
+</html>
