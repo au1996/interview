@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="https://au1996.github.io/interview/css/index.css" />
+  </head>
+  <body>
+    <h1>判断是否回文数</h1>
+    <p>
+      <a
+        href="https://leetcode.cn/problems/palindrome-number/description/"
+        target="_blank"
+        rel="noopener noreferrer"
+        >文章链接</a
+      >
+    </p>
+    <script>
+      // 121 true
+      // 1221 true
+      // 10 false
+      // -121 false
+      /**
+       * @param {number} x
+       * @return {boolean}
+       */
+      var isPalindrome = function (x) {
+        const str = x + ''
+        const len = str.length
+
+        if (len === 1) {
+          return true
+        }
+
+        if (len === 2) {
+          return str[0] === str[1]
+        }
+
+        let i = 0
+        while (i < len / 2) {
+          if (str[i] !== str[len - 1 - i]) {
+            return false
+          }
+          i++
+        }
+        return true
+      }
+
+      console.log(isPalindrome(1))
+      console.log(isPalindrome(10))
+      console.log(isPalindrome(100))
+      console.log(isPalindrome(121))
+      console.log(isPalindrome(1221))
+      console.log(isPalindrome(12321))
+    </script>
+  </body>
+</html>

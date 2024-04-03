@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="https://au1996.github.io/interview/css/index.css" />
+  </head>
+  <body>
+    <h1>实现千位分隔符</h1>
+    <p>
+      <a href="https://www.jianshu.com/p/928c68f92c0c" target="_blank" rel="noopener noreferrer"
+        >文章链接</a
+      >
+    </p>
+    <script>
+      const a = 12345678910
+      const b = 123456.789
+
+      console.log(a.toLocaleString()) // 12,345,678,910
+      console.log(b.toLocaleString()) // 123,456.789
+
+      function numFormat(num) {
+        let intNum = num + ''
+        const strList = intNum.split('.')
+        const minStr = strList[1] ? `.${strList[1]}` : ''
+        if (minStr) {
+          intNum = strList[0]
+        }
+
+        if (intNum.length <= 3) {
+          return intNum + minStr
+        }
+
+        // 从后面插入，不会影响前面的索引
+        // 12345678910
+        // 12345678_910
+        // 12345_678_910
+        // 12_345_678_910
+
+        let flag = 0
+        const list = Array.from(intNum)
+        for (let i = list.length - 1; i > 0; i--) {
+          flag++
+          if (flag === 3) {
+            list.splice(i, 0, '_')
+            flag = 0
+          }
+        }
+
+        return list.join('') + minStr
+      }
+      console.log(numFormat(a))
+      console.log(numFormat(b))
+      console.log(numFormat(1))
+      console.log(numFormat(12))
+      console.log(numFormat(123))
+      console.log(numFormat(1234))
+      console.log(numFormat(12345))
+      console.log(numFormat(123456))
+      console.log(numFormat(1234567))
+      console.log(numFormat(12345678))
+      console.log(numFormat(123456789))
+    </script>
+  </body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>判断数字是否质数/素数</title>
+    <link rel="stylesheet" href="https://au1996.github.io/interview/css/index.css" />
+  </head>
+  <body>
+    <h1>判断数字是否素数</h1>
+    <h2>概念：约数只有1和本身的大于1的数字称为质数，也称为素数</h2>
+    <p>
+      <a
+        href="https://blog.csdn.net/huang_miao_xin/article/details/51331710"
+        target="_blank"
+        rel="noopener noreferrer"
+        >文章链接</a
+      >
+    </p>
+    <script>
+      /**
+       * 常规循环判断
+       */
+      function isPrime(num) {
+        if (num == 2 || num === 3) {
+          return true
+        }
+
+        let i = 2
+        while (i < num - 1) {
+          if (num % i === 0) {
+            return false
+          }
+          i++
+        }
+        return true
+      }
+
+      // console.log(isPrime(2)) // true
+      // console.log(isPrime(3)) // true
+      // console.log(isPrime(4)) // false
+      // console.log(isPrime(5)) // true
+      // console.log(isPrime(6)) // false
+      // console.log(isPrime(7)) // true
+      // console.log(isPrime(8)) // false
+      // console.log(isPrime(9)) // false
+      // console.log(isPrime(10)) // false
+
+      /**
+       * 快速判断
+       * 理论快
+       * 实际好像差不多
+       */
+      function isPrimeQuit(num) {
+        if (num == 2 || num === 3) {
+          return true
+        }
+
+        // 规律：大于等于5的质数一定和6的倍数相邻 5 7  11 13  17 19
+        // 不在6的倍数两侧的 一定不是质数
+        if (num % 6 !== 1 && num % 6 !== 5) {
+          return false
+        }
+
+        // 在6的倍数两侧的 也可能不是质数
+        for (let i = 5; i <= Math.sqrt(num); i += 6) {
+          if (num % i === 0 || num % (i + 2) === 0) {
+            return false
+          }
+        }
+
+        return true
+      }
+
+      // console.log(isPrimeQuit(2)) // true
+      // console.log(isPrimeQuit(3)) // true
+      // console.log(isPrimeQuit(4)) // false
+      // console.log(isPrimeQuit(5)) // true
+      // console.log(isPrimeQuit(6)) // false
+      // console.log(isPrimeQuit(7)) // true
+      // console.log(isPrimeQuit(8)) // false
+      // console.log(isPrimeQuit(9)) // false
+      // console.log(isPrimeQuit(10)) // false
+    </script>
+  </body>
+</html>

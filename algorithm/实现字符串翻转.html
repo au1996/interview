@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>实现字符串翻转</title>
+    <link rel="stylesheet" href="https://au1996.github.io/interview/css/index.css" />
+  </head>
+  <body>
+    <h1>实现字符串翻转</h1>
+    <p>
+      <a
+        href="https://leetcode.cn/problems/reverse-string/description/"
+        target="_blank"
+        rel="noopener noreferrer"
+        >文章链接</a
+      >
+    </p>
+    <script>
+      var reverseString = function (s) {
+        // 原生方法
+        // const result = s.reverse()
+        // console.log(result)
+        // return result
+
+        // 栈方法
+        // let i = s.length - 1
+        // const result = []
+        // while (i >= 0) {
+        //   result.push(s[i])
+        //   i--
+        // }
+        // console.log(result)
+        // return result
+
+        // 交换变量法---最佳
+        let l = -1
+        let r = s.length
+        while (++l < --r) {
+          ;[s[l], s[r]] = [s[r], s[l]]
+        }
+        console.log(s)
+        return s
+      }
+
+      const arr = [1, 2, 3, 4, 5]
+      reverseString(arr)
+    </script>
+  </body>
+</html>

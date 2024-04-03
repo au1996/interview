@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="https://au1996.github.io/interview/css/index.css" />
+  </head>
+  <body>
+    <h1>判断数字n以内的素数个数</h1>
+    <p>
+      <a
+        href="https://leetcode.cn/problems/count-primes/solutions/"
+        target="_blank"
+        rel="noopener noreferrer"
+        >文章链接</a
+      >
+    </p>
+    <script>
+      function countPrimes(n) {
+        const isPrim = new Array(n).fill(true)
+        for (let i = 2; i * i < n; i++) {
+          if (!isPrim[i]) continue
+          for (let j = i * i; j < n; j += i) {
+            isPrim[j] = false
+          }
+        }
+        console.log(isPrim)
+
+        let count = 0
+        for (let i = 2; i < n; i++) {
+          if (isPrim[i]) {
+            count++
+          }
+        }
+
+        return count
+      }
+
+      console.log(countPrimes(6)) // 3   2 3 5
+      console.log(countPrimes(10)) // 4  2 3 5 7
+      console.log(countPrimes(20)) // 8  2 3 5 7 11 13 17 19
+    </script>
+  </body>
+</html>
