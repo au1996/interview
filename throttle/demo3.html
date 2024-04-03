@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="https://au1996.github.io/interview/css/index.css" />
+  </head>
+  <body>
+    <h1>节流-综合版有取消功能--- 开始立刻执行，停止时再执行一次</h1>
+    <p>
+      <a
+        href="https://github.com/mqyqingfeng/Blog/issues/26"
+        target="_blank"
+        rel="noopener noreferrer"
+        >文章链接</a
+      >
+    </p>
+    <p>
+      <button id="btn">点击这里</button>
+      <span>单位：8秒</span>
+      <button onclick="throttled.cancel()">取消节流</button>
+      <span>点击“取消节流”按钮后，再点击“点击这里”按钮，可立即触发事件</span>
+    </p>
+    <h2 id="counter">0</h2>
+    <pre>
+      function throttle(fn, delay) {
+        let timer = null
+        let prev = 0
+
+        let throttled = function () {
+          let now = +new Date()
+          let remaining = delay - (now - prev)
+
+          // 如果没有剩余的时间了或者你改了系统时间
+          if (remaining <= 0 || remaining > delay) {
+            if (timer) {
+              clearTimeout(timer)
+              timer = null
+            }
+            prev = now
+            fn.apply(this, arguments)
+          } else if (!timer) {
+            timer = setTimeout(() => {
+              prev = +new Date()
+              timer = null
+              fn.apply(this, arguments)
+            }, remaining)
+          }
+        }
+
+        throttled.cancel = function () {
+          clearTimeout(timer)
+          timer = null
+          prev = 0
+        }
+
+        return throttled
+      }
+
+      let count = 0
+      function addCount() {
+        counterDom.textContent = ++count
+      }
+      const counterDom = document.getElementById('counter')
+      const btnDom = document.getElementById('btn')
+      const throttled = throttle(addCount, 1000 * 8)
+      btnDom.addEventListener('click', throttled)
+    </pre>
+    <script>
+      function throttle(fn, delay) {
+        let timer = null
+        let prev = 0
+
+        let throttled = function () {
+          let now = +new Date()
+          let remaining = delay - (now - prev)
+
+          // 如果没有剩余的时间了或者你改了系统时间
+          if (remaining <= 0 || remaining > delay) {
+            if (timer) {
+              clearTimeout(timer)
+              timer = null
+            }
+            prev = now
+            fn.apply(this, arguments)
+          } else if (!timer) {
+            timer = setTimeout(() => {
+              prev = +new Date()
+              timer = null
+              fn.apply(this, arguments)
+            }, remaining)
+          }
+        }
+
+        throttled.cancel = function () {
+          clearTimeout(timer)
+          timer = null
+          prev = 0
+        }
+
+        return throttled
+      }
+
+      let count = 0
+      function addCount() {
+        counterDom.textContent = ++count
+      }
+      const counterDom = document.getElementById('counter')
+      const btnDom = document.getElementById('btn')
+      const throttled = throttle(addCount, 1000 * 8)
+      btnDom.addEventListener('click', throttled)
+    </script>
+  </body>
+</html>

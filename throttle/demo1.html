@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="https://au1996.github.io/interview/css/index.css" />
+  </head>
+  <body>
+    <h1>节流-时间戳版- 立刻执行，停止触发后没有办法再执行事件</h1>
+    <p>
+      <a
+        href="https://github.com/mqyqingfeng/Blog/issues/26"
+        target="_blank"
+        rel="noopener noreferrer"
+        >文章链接</a
+      >
+    </p>
+    <p>
+      <button id="btn">点击这里</button>
+      <span>单位：2秒</span>
+    </p>
+    <h2 id="counter">0</h2>
+    <pre>
+      function throttle(fn, delay) {
+        let last = 0
+        return function () {
+          const now = Date.now()
+          if (now - last > delay) {
+            fn.apply(this, arguments)
+            last = now
+          }
+        }
+      }
+
+      let count = 0
+      function addCount() {
+        counterDom.textContent = ++count
+      }
+      const counterDom = document.getElementById('counter')
+      const btnDom = document.getElementById('btn')
+      const throttled = throttle(addCount, 2000)
+      btnDom.addEventListener('click', throttled)
+    </pre>
+    <a
+      href="https://au1996.github.io/interview/throttle/demo2.html"
+      target="_blank"
+      rel="noopener noreferrer"
+      >定时器版</a
+    >
+    <script>
+      function throttle(fn, delay) {
+        let last = 0
+        return function () {
+          const now = Date.now()
+          if (now - last > delay) {
+            fn.apply(this, arguments)
+            last = now
+          }
+        }
+      }
+
+      let count = 0
+      function addCount() {
+        counterDom.textContent = ++count
+      }
+      const counterDom = document.getElementById('counter')
+      const btnDom = document.getElementById('btn')
+      const throttled = throttle(addCount, 2000)
+      btnDom.addEventListener('click', throttled)
+    </script>
+  </body>
+</html>
