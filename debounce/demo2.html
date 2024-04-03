@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="https://au1996.github.io/interview/css/index.css" />
+  </head>
+  <body>
+    <h1>防抖-立即执行版</h1>
+    <p>
+      <button id="btn">点击这里</button>
+      <span>(单位：1秒)</span>
+    </p>
+    <h2 id="counter">0</h2>
+    <pre>
+      function debounce(fn, delay, immediate) {
+        let timer = null
+        return function () {
+          if (timer) {
+            clearTimeout(timer)
+          }
+          if (immediate) {
+            let callNow = !timer
+            timer = setTimeout(() => {
+              timer = null
+            }, delay)
+            if (callNow) {
+              fn.apply(this, arguments)
+            }
+          } else {
+            timer = setTimeout(() => {
+              fn.apply(this, arguments)
+            }, delay)
+          }
+        }
+      }
+
+      let count = 0
+      function addCount() {
+        counterDom.textContent = ++count
+      }
+
+      const counterDom = document.getElementById('counter')
+      const btnDom = document.getElementById('btn')
+      const debounced = debounce(addCount, 1000, true)
+      btnDom.addEventListener('click', debounced)
+    </pre>
+    <a
+      href="https://au1996.github.io/interview/debounce/demo3.html"
+      target="_blank"
+      rel="noopener noreferrer"
+      >有取消功能版</a
+    >
+    <script>
+      function debounce(fn, delay, immediate) {
+        let timer = null
+        return function () {
+          if (timer) {
+            clearTimeout(timer)
+          }
+          if (immediate) {
+            let callNow = !timer
+            timer = setTimeout(() => {
+              timer = null
+            }, delay)
+            if (callNow) {
+              fn.apply(this, arguments)
+            }
+          } else {
+            timer = setTimeout(() => {
+              fn.apply(this, arguments)
+            }, delay)
+          }
+        }
+      }
+
+      let count = 0
+      function addCount() {
+        counterDom.textContent = ++count
+      }
+
+      const counterDom = document.getElementById('counter')
+      const btnDom = document.getElementById('btn')
+      const debounced = debounce(addCount, 1000, true)
+      btnDom.addEventListener('click', debounced)
+    </script>
+  </body>
+</html>

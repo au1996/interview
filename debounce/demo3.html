@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="https://au1996.github.io/interview/css/index.css" />
+  </head>
+  <body>
+    <h1>防抖-有取消功能版</h1>
+    <p>
+      <button id="btn">点击这里</button>
+      <span>(单位：8秒)</span>
+      <button onclick="debounced.cancel()">取消防抖</button>
+      <span>点击“取消防抖”按钮后，再点击“点击这里”按钮，可立即触发事件</span>
+    </p>
+    <h2 id="counter">0</h2>
+    <pre>
+      function debounce(fn, delay, immediate) {
+        let timer = null
+        let debounced = function () {
+          if (timer) {
+            clearTimeout(timer)
+          }
+          if (immediate) {
+            let callNow = !timer
+            timer = setTimeout(() => {
+              timer = null
+            }, delay)
+            if (callNow) {
+              fn.apply(this, arguments)
+            }
+          } else {
+            timer = setTimeout(() => {
+              fn.apply(this, arguments)
+            }, delay)
+          }
+        }
+        debounced.cancel = function () {
+          clearTimeout(timer)
+          timer = null
+        }
+
+        return debounced
+      }
+
+      let count = 0
+      function addCount() {
+        counterDom.textContent = ++count
+      }
+
+      const counterDom = document.getElementById('counter')
+      const btnDom = document.getElementById('btn')
+      const debounced = debounce(addCount, 1000 * 8, true)
+      btnDom.addEventListener('click', debounced)
+    </pre>
+    <script>
+      function debounce(fn, delay, immediate) {
+        let timer = null
+        let debounced = function () {
+          if (timer) {
+            clearTimeout(timer)
+          }
+          if (immediate) {
+            let callNow = !timer
+            timer = setTimeout(() => {
+              timer = null
+            }, delay)
+            if (callNow) {
+              fn.apply(this, arguments)
+            }
+          } else {
+            timer = setTimeout(() => {
+              fn.apply(this, arguments)
+            }, delay)
+          }
+        }
+        debounced.cancel = function () {
+          clearTimeout(timer)
+          timer = null
+        }
+
+        return debounced
+      }
+
+      let count = 0
+      function addCount() {
+        counterDom.textContent = ++count
+      }
+
+      const counterDom = document.getElementById('counter')
+      const btnDom = document.getElementById('btn')
+      const debounced = debounce(addCount, 1000 * 8, true)
+      btnDom.addEventListener('click', debounced)
+    </script>
+  </body>
+</html>
