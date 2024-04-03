@@ -16,6 +16,36 @@
         >文章链接</a
       >
     </p>
+    <pre>
+      var reverseString = function (s) {
+        // 原生方法
+        // const result = s.reverse()
+        // console.log(result)
+        // return result
+
+        // 栈方法
+        // let i = s.length - 1
+        // const result = []
+        // while (i >= 0) {
+        //   result.push(s[i])
+        //   i--
+        // }
+        // console.log(result)
+        // return result
+
+        // 交换变量法---最佳
+        let l = -1
+        let r = s.length
+        while (++l < --r) {
+          ;[s[l], s[r]] = [s[r], s[l]]
+        }
+        console.log(s)
+        return s
+      }
+
+      const arr = [1, 2, 3, 4, 5]
+      reverseString(arr)
+    </pre>
     <script>
       var reverseString = function (s) {
         // 原生方法

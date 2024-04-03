@@ -16,10 +16,41 @@
         >文章链接</a
       >
     </p>
-    <script>
+    <pre>
+      // 10 false
       // 121 true
       // 1221 true
+      // -121 false
+      /**
+       * @param {number} x
+       * @return {boolean}
+       */
+      var isPalindrome = function (x) {
+        const str = x + ''
+        const len = str.length
+
+        if (len === 1) {
+          return true
+        }
+
+        if (len === 2) {
+          return str[0] === str[1]
+        }
+
+        let i = 0
+        while (i < len / 2) {
+          if (str[i] !== str[len - 1 - i]) {
+            return false
+          }
+          i++
+        }
+        return true
+      }
+    </pre>
+    <script>
       // 10 false
+      // 121 true
+      // 1221 true
       // -121 false
       /**
        * @param {number} x

@@ -17,6 +17,52 @@
         >文章链接</a
       >
     </p>
+    <pre>
+      /**
+      * 常规循环判断
+      */
+     function isPrime(num) {
+       if (num == 2 || num === 3) {
+         return true
+       }
+
+       let i = 2
+       while (i < num - 1) {
+         if (num % i === 0) {
+           return false
+         }
+         i++
+       }
+       return true
+     }
+    </pre>
+    <pre>
+      /**
+      * 快速判断
+      * 理论快
+      * 实际好像差不多
+      */
+     function isPrimeQuit(num) {
+       if (num == 2 || num === 3) {
+         return true
+       }
+
+       // 规律：大于等于5的质数一定和6的倍数相邻 5 7  11 13  17 19
+       // 不在6的倍数两侧的 一定不是质数
+       if (num % 6 !== 1 && num % 6 !== 5) {
+         return false
+       }
+
+       // 在6的倍数两侧的 也可能不是质数
+       for (let i = 5; i <= Math.sqrt(num); i += 6) {
+         if (num % i === 0 || num % (i + 2) === 0) {
+           return false
+         }
+       }
+
+       return true
+     }
+    </pre>
     <script>
       /**
        * 常规循环判断

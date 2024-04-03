@@ -16,6 +16,31 @@
         >文章链接</a
       >
     </p>
+    <pre>
+      function countPrimes(n) {
+        const isPrim = new Array(n).fill(true)
+        for (let i = 2; i * i < n; i++) {
+          if (!isPrim[i]) continue
+          for (let j = i * i; j < n; j += i) {
+            isPrim[j] = false
+          }
+        }
+        console.log(isPrim)
+
+        let count = 0
+        for (let i = 2; i < n; i++) {
+          if (isPrim[i]) {
+            count++
+          }
+        }
+
+        return count
+      }
+
+      console.log(countPrimes(6))  // 3  2 3 5
+      console.log(countPrimes(10)) // 4  2 3 5 7
+      console.log(countPrimes(20)) // 8  2 3 5 7 11 13 17 19
+    </pre>
     <script>
       function countPrimes(n) {
         const isPrim = new Array(n).fill(true)
