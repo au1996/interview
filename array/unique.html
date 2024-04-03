@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>数组去重</title>
+    <link rel="stylesheet" href="https://au1996.github.io/interview/css/index.css" />
+  </head>
+  <body>
+    <h1>数组去重</h1>
+    <pre>
+      const unique = (arr) => {
+        const map = new Map()
+        const result = arr.filter((item) => !map.has(item) && map.set(item, 1))
+        console.log(result)
+      }
+
+      const uniqueSet = (arr) => {
+        const result = [...new Set(arr)]
+        console.log(result)
+      }
+    </pre>
+    <script>
+      const xy = {
+        name: '雪月',
+        age: 18,
+      }
+      const list = [
+        1,
+        1,
+        NaN,
+        NaN,
+        '字符串',
+        '字符串',
+        true,
+        true,
+        false,
+        false,
+        null,
+        null,
+        undefined,
+        undefined,
+        ,
+        ,
+        Symbol('xy'),
+        18n,
+        18n,
+        xy,
+        xy,
+      ]
+
+      const unique = (arr) => {
+        const map = new Map()
+        const result = arr.filter((item) => !map.has(item) && map.set(item, 1))
+        console.log(result)
+      }
+
+      const uniqueSet = (arr) => {
+        const result = [...new Set(arr)]
+        console.log(result)
+      }
+
+      unique(list)
+      uniqueSet(list)
+    </script>
+  </body>
+</html>

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="https://au1996.github.io/interview/css/index.css" />
+  </head>
+  <body>
+    <h1>拍平数组</h1>
+    <pre>
+      const arr = [1, [2, [3, [4, 5]]], 6]
+
+      // 使用原生的flat
+      console.log(arr.flat(Infinity)) // [1, 2, 3, 4, 5, 6]
+
+      // 使用扩展运算符
+      function myFlat1(arr) {
+        while (arr.some((item) => Array.isArray(item))) {
+          arr = [].concat(...arr)
+        }
+        return arr
+      }
+      console.log('myFlat1', myFlat1(arr)) // [1, 2, 3, 4, 5, 6]
+
+      // 使用reduce
+      function myFlat2(arr) {
+        return arr.reduce((prev, cur) => {
+          return prev.concat(Array.isArray(cur) ? myFlat2(cur) : cur)
+        }, [])
+      }
+      console.log('myFlat2', myFlat2(arr)) // [1, 2, 3, 4, 5, 6]
+
+      // 使用递归
+      function myFlat3(arr) {
+        let result = []
+        for (let i = 0; i < arr.length; i++) {
+          if (Array.isArray(arr[i])) {
+            result = result.concat(myFlat3(arr[i]))
+          } else {
+            result.push(arr[i])
+          }
+        }
+        return result
+      }
+      console.log('myFlat3', myFlat3(arr)) // [1, 2, 3, 4, 5, 6]
+
+      // 使用栈
+      function myFlat4(arr) {
+        const result = []
+        const stack = [...arr]
+        while (stack.length) {
+          const item = stack.pop()
+          if (Array.isArray(item)) {
+            stack.push(...item)
+          } else {
+            result.unshift(item)
+          }
+        }
+        return result
+      }
+      console.log('myFlat4', myFlat4(arr)) // [1, 2, 3, 4, 5, 6]
+
+      // 使用 Generator 实现 flat 函数
+      function* myFlat5(arr) {
+        for (let i = 0; i < arr.length; i++) {
+          if (Array.isArray(arr[i])) {
+            yield* myFlat5(arr[i])
+          } else {
+            yield arr[i]
+          }
+        }
+      }
+      console.log('myFlat5', [...myFlat5(arr)]) // [1, 2, 3, 4, 5, 6]
+
+      // 使用toString
+      function myFlat6(arr) {
+        return arr
+          .toString()
+          .split(',')
+          .map((item) => +item)
+      }
+      console.log('myFlat6', myFlat6(arr)) // [1, 2, 3, 4, 5, 6]
+
+      // 使用正则
+      function myFlat7(arr) {
+        return JSON.parse('[' + JSON.stringify(arr).replace(/\[|\]/g, '') + ']')
+      }
+      console.log('myFlat7', myFlat7(arr)) // [1, 2, 3, 4, 5, 6]
+
+      // 通过传入整数参数控制 拍平层数
+      function myFlat8(arr, depth = 1) {
+        return arr.reduce((prev, cur) => {
+          return prev.concat(depth > 1 && Array.isArray(cur) ? myFlat8(cur, depth - 1) : cur)
+        }, [])
+      }
+      console.log('myFlat8 1', myFlat8(arr, 1)) // [1, 2, [3, [4, 5]], 6]
+      console.log('myFlat8 2', myFlat8(arr, 2)) // [1, 2, 3, [4, 5], 6]
+      console.log('myFlat8 3', myFlat8(arr, 3)) // [1, 2, 3, 4, 5, 6]
+    </pre>
+    <script>
+      const arr = [1, [2, [3, [4, 5]]], 6]
+
+      // 使用原生的flat
+      console.log(arr.flat(Infinity)) // [1, 2, 3, 4, 5, 6]
+
+      // 使用扩展运算符
+      function myFlat1(arr) {
+        while (arr.some((item) => Array.isArray(item))) {
+          console.log(111, ...arr)
+          arr = [].concat(...arr)
+        }
+        return arr
+      }
+      console.log('myFlat1', myFlat1(arr)) // [1, 2, 3, 4, 5, 6]
+
+      // 使用reduce
+      function myFlat2(arr) {
+        return arr.reduce((prev, cur) => {
+          return prev.concat(Array.isArray(cur) ? myFlat2(cur) : cur)
+        }, [])
+      }
+      console.log('myFlat2', myFlat2(arr)) // [1, 2, 3, 4, 5, 6]
+
+      // 使用递归
+      function myFlat3(arr) {
+        let result = []
+        for (let i = 0; i < arr.length; i++) {
+          if (Array.isArray(arr[i])) {
+            result = result.concat(myFlat3(arr[i]))
+          } else {
+            result.push(arr[i])
+          }
+        }
+        return result
+      }
+      console.log('myFlat3', myFlat3(arr)) // [1, 2, 3, 4, 5, 6]
+
+      // 使用栈
+      function myFlat4(arr) {
+        const result = []
+        const stack = [...arr]
+        while (stack.length) {
+          const item = stack.pop()
+          if (Array.isArray(item)) {
+            stack.push(...item)
+          } else {
+            result.unshift(item)
+          }
+        }
+        return result
+      }
+      console.log('myFlat4', myFlat4(arr)) // [1, 2, 3, 4, 5, 6]
+
+      // 使用 Generator 实现 flat 函数
+      function* myFlat5(arr) {
+        for (let i = 0; i < arr.length; i++) {
+          if (Array.isArray(arr[i])) {
+            yield* myFlat5(arr[i])
+          } else {
+            yield arr[i]
+          }
+        }
+      }
+      console.log('myFlat5', [...myFlat5(arr)]) // [1, 2, 3, 4, 5, 6]
+
+      // 使用toString
+      function myFlat6(arr) {
+        return arr
+          .toString()
+          .split(',')
+          .map((item) => +item)
+      }
+      console.log('myFlat6', myFlat6(arr)) // [1, 2, 3, 4, 5, 6]
+
+      // 使用正则
+      function myFlat7(arr) {
+        return JSON.parse('[' + JSON.stringify(arr).replace(/\[|\]/g, '') + ']')
+      }
+      console.log('myFlat7', myFlat7(arr)) // [1, 2, 3, 4, 5, 6]
+
+      // 通过传入整数参数控制 拍平层数
+      function myFlat8(arr, depth = 1) {
+        return arr.reduce((prev, cur) => {
+          return prev.concat(depth > 1 && Array.isArray(cur) ? myFlat8(cur, depth - 1) : cur)
+        }, [])
+      }
+      console.log('myFlat8 1', myFlat8(arr, 1)) // [1, 2, [3, [4, 5]], 6]
+      console.log('myFlat8 2', myFlat8(arr, 2)) // [1, 2, 3, [4, 5], 6]
+      console.log('myFlat8 3', myFlat8(arr, 3)) // [1, 2, 3, 4, 5, 6]
+    </script>
+  </body>
+</html>
