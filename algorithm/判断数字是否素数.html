@@ -82,16 +82,15 @@
         return true
       }
 
-      // console.log(isPrime(2)) // true
-      // console.log(isPrime(3)) // true
-      // console.log(isPrime(4)) // false
-      // console.log(isPrime(5)) // true
-      // console.log(isPrime(6)) // false
-      // console.log(isPrime(7)) // true
-      // console.log(isPrime(8)) // false
-      // console.log(isPrime(9)) // false
-      // console.log(isPrime(10)) // false
-
+      console.time('isPrime')
+      console.log(isPrime(2)) // true
+      console.log(isPrime(3)) // true
+      console.log(isPrime(4)) // false
+      console.log(isPrime(5)) // true
+      console.log(isPrime(123456791)) // true 这个可以看出差距
+      console.timeEnd('isPrime')
+    </script>
+    <script>
       /**
        * 快速判断
        * 理论快
@@ -118,15 +117,13 @@
         return true
       }
 
-      // console.log(isPrimeQuit(2)) // true
-      // console.log(isPrimeQuit(3)) // true
-      // console.log(isPrimeQuit(4)) // false
-      // console.log(isPrimeQuit(5)) // true
-      // console.log(isPrimeQuit(6)) // false
-      // console.log(isPrimeQuit(7)) // true
-      // console.log(isPrimeQuit(8)) // false
-      // console.log(isPrimeQuit(9)) // false
-      // console.log(isPrimeQuit(10)) // false
+      console.time('isPrimeQuit')
+      console.log(isPrimeQuit(2)) // true
+      console.log(isPrimeQuit(3)) // true
+      console.log(isPrimeQuit(4)) // false
+      console.log(isPrimeQuit(5)) // true
+      console.log(isPrimeQuit(123456791)) // true
+      console.timeEnd('isPrimeQuit')
     </script>
   </body>
 </html>

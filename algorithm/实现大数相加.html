@@ -22,21 +22,23 @@
       const strB = '1234567899999999999'
 
       const add = function (a, b) {
-        let maxLen = Math.max(a.length, b.length)
+        const maxLen = Math.max(a.length, b.length)
         a = a.padStart(maxLen, 0)
         b = b.padStart(maxLen, 0)
 
-        let t = 0 // 个位
-        let f = 0 // 进位
+        let current = 0 // 个位/当前计算位
+        let next = 0 // 进位
         let sum = '' // 结果
+
         for (let i = maxLen - 1; i >= 0; i--) {
-          t = parseInt(a[i]) + parseInt(b[i]) + f
-          f = Math.floor(t / 10)
-          sum = (t % 10) + sum
+          current = parseInt(a[i]) + parseInt(b[i]) + next
+          next = Math.floor(current / 10)
+          sum = (current % 10) + sum
         }
-        if (f === 1) {
+        if (next === 1) {
           sum = '1' + sum
         }
+
         return sum
       }
 
@@ -51,25 +53,29 @@
       const strB = '1234567899999999999'
 
       const add = function (a, b) {
-        let maxLen = Math.max(a.length, b.length)
+        const maxLen = Math.max(a.length, b.length)
         a = a.padStart(maxLen, 0)
         b = b.padStart(maxLen, 0)
 
-        let t = 0 // 个位
-        let f = 0 // 进位
+        let current = 0 // 个位/当前计算位
+        let next = 0 // 进位
         let sum = '' // 结果
+
         for (let i = maxLen - 1; i >= 0; i--) {
-          t = parseInt(a[i]) + parseInt(b[i]) + f
-          f = Math.floor(t / 10)
-          sum = (t % 10) + sum
+          current = parseInt(a[i]) + parseInt(b[i]) + next
+          next = Math.floor(current / 10)
+          sum = (current % 10) + sum
         }
-        if (f === 1) {
+        if (next === 1) {
           sum = '1' + sum
         }
+
         return sum
       }
 
       console.log(add(strA, strB))
+      console.log(add(strA, strB) == a + b) // true
+      console.log(add(strA, strB) === a + b) // false
     </script>
   </body>
 </html>
