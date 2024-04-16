@@ -196,11 +196,12 @@
       <script>
         new Promise((resolve, reject) => {
           setTimeout(() => {
-            reject({ test: 'error' })
+            resolve({ test: 'ok' })
           }, 1000)
         })
           .then((data) => {
             console.log('then', data)
+            throw Error('错误')
           })
           .catch((err) => {
             console.log('catch', err)
