@@ -8,110 +8,212 @@
   </head>
   <body>
     <p>
-      <a href="https://juejin.cn/post/6844904063570542599" target="_blank" rel="noopener noreferrer"
+      <a href="https://www.ituring.com.cn/article/66566" target="_blank" rel="noopener noreferrer"
         >文章链接</a
       >
     </p>
-    <ol>
-      <li>
-        可进行链式调用，且每次 then 返回了新的
-        Promise(2次打印结果不一致，如果是同一个实例，打印结果应该一致。
-      </li>
-      <li>
-        只输出第一次 resolve 的内容，reject 的内容没有输出，即 Promise 是有状态且状态只可以由pending
-        -> fulfilled或 pending-> rejected,是不可逆的
-      </li>
-      <li>then 中返回了新的 Promise,但是then中注册的回调仍然是属于上一个 Promise 的</li>
-    </ol>
-    <p>基于以上几点，我们先写个基于 PromiseA+ 规范的只含 resolve 方法的 Promise 模型</p>
     <script>
-      function Promise(fn) {
-        let state = 'pending'
-        let value = null
-        const callbacks = []
+      function MyPromise(executor) {
+        var state = 'pending' // 初始状态为 pending
+        var value = undefined // 成功时的返回值
+        var reason = undefined // 失败时的原因
+        var onFulfilledCallbacks = [] // 存储成功态的回调函数
+        var onRejectedCallbacks = [] // 存储失败态的回调函数
 
-        this.then = function (onFulfilled) {
-          return new Promise((resolve) => {
-            handle({
-              // 桥梁，将新 Promise 的 resolve 方法，放到前一个 promise 的回调对象中
-              onFulfilled,
-              resolve,
-            })
+        function resolve(newValue) {
+          if (state === 'pending') {
+            state = 'fulfilled' // 状态转为成功态
+            value = newValue // 保存成功的返回值
+            for (var i = 0; i < onFulfilledCallbacks.length; i++) {
+              onFulfilledCallbacks[i](value) // 依次执行成功态的回调函数
+            }
+          }
+        }
+
+        function reject(newReason) {
+          if (state === 'pending') {
+            state = 'rejected' // 状态转为失败态
+            reason = newReason // 保存失败的原因
+            for (var i = 0; i < onRejectedCallbacks.length; i++) {
+              onRejectedCallbacks[i](reason) // 依次执行失败态的回调函数
+            }
+          }
+        }
+
+        try {
+          executor(resolve, reject) // 执行传入的执行器函数
+        } catch (error) {
+          reject(error) // 如果执行器函数出错，将 Promise 状态置为 rejected
+        }
+
+        function then(onFulfilled, onRejected) {
+          return new MyPromise(function (resolve, reject) {
+            if (state === 'fulfilled') {
+              try {
+                var result = onFulfilled(value) // 执行成功态的回调函数
+                resolve(result) // 将新 Promise 置为成功态
+              } catch (error) {
+                reject(error) // 如果执行成功态的回调函数时出错，将新 Promise 置为失败态
+              }
+            }
+            if (state === 'rejected') {
+              try {
+                var result = onRejected(reason) // 执行失败态的回调函数
+                resolve(result) // 将新 Promise 置为成功态
+              } catch (error) {
+                reject(error) // 如果执行失败态的回调函数时出错，将新 Promise 置为失败态
+              }
+            }
+            if (state === 'pending') {
+              onFulfilledCallbacks.push(function (val) {
+                try {
+                  var result = onFulfilled(val) // 执行成功态的回调函数
+                  resolve(result) // 将新 Promise 置为成功态
+                } catch (error) {
+                  reject(error) // 如果执行成功态的回调函数时出错，将新 Promise 置为失败态
+                }
+              })
+              onRejectedCallbacks.push(function (res) {
+                try {
+                  var result = onRejected(res) // 执行失败态的回调函数
+                  resolve(result) // 将新 Promise 置为成功态
+                } catch (error) {
+                  reject(error) // 如果执行失败态的回调函数时出错，将新 Promise 置为失败态
+                }
+              })
+            }
           })
         }
 
-        function handle(callback) {
-          if (state === 'pending') {
-            callbacks.push(callback)
-            return
-          }
+        function catchMethod(onRejected) {
+          return then(null, onRejected) // 捕获失败态的回调函数
+        }
 
-          if (state === 'fulfilled') {
-            if (!callback.onFulfilled) {
-              callback.resolve(value)
-              return
+        function finallyMethod(onFinally) {
+          return then(
+            function (val) {
+              return MyPromise.resolve(onFinally()).then(function () {
+                return val
+              })
+            },
+            function (res) {
+              return MyPromise.resolve(onFinally()).then(function () {
+                throw res
+              })
             }
-
-            const ret = callback.onFulfilled(value) // 处理回调
-            callback.resolve(ret) // 处理下一个 promise 的resolve
-          }
+          )
         }
 
-        function resolve(newValue) {
-          const fn = () => {
-            if (state !== 'pending') return
-
-            if (newValue && (typeof newValue === 'object' || typeof newValue === 'function')) {
-              const { then } = newValue
-              if (typeof then === 'function') {
-                // newValue 为新产生的 Promise,此时resolve为上个 promise 的resolve
-                // 相当于调用了新产生 Promise 的then方法，注入了上个 promise 的resolve 为其回调
-                then.call(newValue, resolve)
-                return
-              }
+        function all(promises) {
+          return new MyPromise(function (resolve, reject) {
+            var results = []
+            var counter = 0
+            for (var i = 0; i < promises.length; i++) {
+              promises[i]
+                .then(function (value) {
+                  results[i] = value
+                  counter++
+                  if (counter === promises.length) {
+                    resolve(results)
+                  }
+                })
+                .catch(function (reason) {
+                  reject(reason)
+                })
             }
-
-            state = 'fulfilled'
-            value = newValue
-            handelCb()
-          }
-
-          setTimeout(fn, 0) //基于 PromiseA+ 规范
+          })
         }
 
-        function handelCb() {
-          while (callbacks.length) {
-            const fulfiledFn = callbacks.shift()
-            handle(fulfiledFn)
-          }
+        function race(promises) {
+          return new MyPromise(function (resolve, reject) {
+            for (var i = 0; i < promises.length; i++) {
+              promises[i]
+                .then(function (value) {
+                  resolve(value)
+                })
+                .catch(function (reason) {
+                  reject(reason)
+                })
+            }
+          })
         }
 
-        fn(resolve)
+        return {
+          then: then,
+          catch: catchMethod,
+          finally: finallyMethod,
+          all: all,
+          race: race,
+        }
+      }
+
+      MyPromise.resolve = function (value) {
+        return new MyPromise(function (resolve) {
+          resolve(value)
+        })
+      }
+
+      MyPromise.reject = function (reason) {
+        return new MyPromise(function (resolve, reject) {
+          reject(reason)
+        })
       }
     </script>
 
     <script>
-      new Promise((resolve) => {
+      new Promise((resolve, reject) => {
         setTimeout(() => {
-          resolve({ test: 1 })
-        }, 1000)
+          reject(3)
+        }, 500)
       })
-        .then((data) => {
-          console.log('result1', data)
-          //dosomething
-          return test()
+        .then(
+          (res) => {
+            console.log('Promise_result1', res)
+          },
+          (err) => {
+            console.log('Promise_result2', err)
+          }
+        )
+        .then((res) => {
+          console.log('Promise_result3', res)
+          throw Error('Promise_error')
         })
-        .then((data) => {
-          console.log('result2', data)
+        .catch((err) => {
+          console.log('Promise_catch', err)
         })
+    </script>
 
-      function test(id) {
-        return new Promise((resolve) => {
-          setTimeout(() => {
-            resolve({ test: 2 })
-          }, 3000)
+    <script>
+      new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve('------')
+        }, 500)
+      }).then((res) => {
+        console.log(res)
+      })
+    </script>
+
+    <script>
+      new MyPromise((resolve, reject) => {
+        setTimeout(() => {
+          reject(3)
+        }, 500)
+      })
+        .then(
+          (res) => {
+            console.log('result1', res)
+          },
+          (res) => {
+            console.log('result2', res)
+          }
+        )
+        .then((res) => {
+          console.log('result3', res)
+          throw Error('my_error')
         })
-      }
+        .catch((err) => {
+          console.log('catch', err)
+        })
     </script>
   </body>
 </html>
