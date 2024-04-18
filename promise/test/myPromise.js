@@ -15,7 +15,6 @@ function myPromise(executor) {
       for (var i = 0; i < onFulfilledCallbacks.length; i++) {
         onFulfilledCallbacks[i](value) // 依次执行成功态的回调函数
       }
-      onFulfilledCallbacks.length = 0
     }
   }
 
@@ -26,7 +25,6 @@ function myPromise(executor) {
       for (var i = 0; i < onRejectedCallbacks.length; i++) {
         onRejectedCallbacks[i](reason) // 依次执行失败态的回调函数
       }
-      onRejectedCallbacks.length = 0
     }
   }
 
@@ -57,6 +55,10 @@ function myPromise(executor) {
       if (state === PENDING) {
         onFulfilledCallbacks.push(function (val) {
           try {
+            if (typeof onFulfilled !== 'function') {
+              resolve(val)
+              return
+            }
             var result = onFulfilled(val) // 执行成功态的回调函数
             resolve(result) // 将新 myPromise 置为成功态
           } catch (error) {
@@ -65,6 +67,10 @@ function myPromise(executor) {
         })
         onRejectedCallbacks.push(function (res) {
           try {
+            if (typeof onRejected !== 'function') {
+              resolve(val)
+              return
+            }
             var result = onRejected(res) // 执行失败态的回调函数
             resolve(result) // 将新 myPromise 置为成功态
           } catch (error) {

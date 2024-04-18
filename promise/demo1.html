@@ -8,73 +8,104 @@
   </head>
   <body>
     <p>
-      <a href="https://www.ituring.com.cn/article/66566" target="_blank" rel="noopener noreferrer"
+      <a
+        href="https://mengera88.github.io/2017/05/18/Promise%E5%8E%9F%E7%90%86%E8%A7%A3%E6%9E%90/"
+        target="_blank"
+        rel="noopener noreferrer"
         >文章链接</a
+      >
+    </p>
+    <p>
+      <a href="https://promisesaplus.com/" target="_blank" rel="noopener noreferrer"
+        >Promises/A+规范</a
+      >
+    </p>
+    <p>
+      <a
+        href="https://malcolmyu.github.io/malnote/2015/06/12/Promises-A-Plus/"
+        target="_blank"
+        rel="noopener noreferrer"
+        >Promises/A+规范（中文）</a
       >
     </p>
     <script>
       function MyPromise(executor) {
-        let state = 'pending' // 初始状态为 pending
-        let value = undefined // 成功时的返回值
-        let reason = undefined // 失败时的原因
-        let onFulfilledCallbacks = [] // 存储成功态的回调函数
-        let onRejectedCallbacks = [] // 存储失败态的回调函数
+        var PENDING = 'pending' // 待定
+        var FULFILLED = 'fulfilled' // 已完成
+        var REJECTED = 'rejected' // 已拒绝
+        var state = PENDING // 状态
+        var value = undefined // 返回值
+        var reason = undefined // 失败时的原因
+        var onFulfilledCallbacks = [] // 存储成功态的回调函数
+        var onRejectedCallbacks = [] // 存储失败态的回调函数
 
         function resolve(newValue) {
-          if (state === 'pending') {
-            state = 'fulfilled' // 状态转为成功态
+          if (state === PENDING) {
+            state = FULFILLED // 状态转为成功态
             value = newValue // 保存成功的返回值
-            onFulfilledCallbacks.forEach((callback) => callback(value)) // 依次执行成功态的回调函数
+            for (var i = 0; i < onFulfilledCallbacks.length; i++) {
+              onFulfilledCallbacks[i](value) // 依次执行成功态的回调函数
+            }
           }
         }
 
         function reject(newReason) {
-          if (state === 'pending') {
-            state = 'rejected' // 状态转为失败态
+          if (state === PENDING) {
+            state = REJECTED // 状态转为失败态
             reason = newReason // 保存失败的原因
-            onRejectedCallbacks.forEach((callback) => callback(reason)) // 依次执行失败态的回调函数
+            for (var i = 0; i < onRejectedCallbacks.length; i++) {
+              onRejectedCallbacks[i](reason) // 依次执行失败态的回调函数
+            }
           }
         }
 
         try {
           executor(resolve, reject) // 执行传入的执行器函数
         } catch (error) {
-          reject(error) // 如果执行器函数出错，将 Promise 状态置为 rejected
+          reject(error) // 如果执行器函数出错，将状态置为 rejected
         }
 
         function then(onFulfilled, onRejected) {
-          return new MyPromise((resolve, reject) => {
-            if (state === 'fulfilled') {
+          return new MyPromise(function (resolve, reject) {
+            if (state === FULFILLED) {
               try {
-                const result = onFulfilled(value) // 执行成功态的回调函数
-                resolve(result) // 将新 Promise 置为成功态
+                var result = onFulfilled(value) // 执行成功态的回调函数
+                resolve(result) // 将新 MyPromise 置为成功态
               } catch (error) {
-                reject(error) // 如果执行成功态的回调函数时出错，将新 Promise 置为失败态
+                reject(error) // 如果执行成功态的回调函数时出错，将新 MyPromise 置为失败态
               }
             }
-            if (state === 'rejected') {
+            if (state === REJECTED) {
               try {
-                const result = onRejected(reason) // 执行失败态的回调函数
-                resolve(result) // 将新 Promise 置为成功态
+                var result = onRejected(reason) // 执行失败态的回调函数
+                resolve(result) // 将新 MyPromise 置为成功态
               } catch (error) {
-                reject(error) // 如果执行失败态的回调函数时出错，将新 Promise 置为失败态
+                reject(error) // 如果执行失败态的回调函数时出错，将新 MyPromise 置为失败态
               }
             }
-            if (state === 'pending') {
-              onFulfilledCallbacks.push((val) => {
+            if (state === PENDING) {
+              onFulfilledCallbacks.push(function (val) {
                 try {
-                  const result = onFulfilled(val) // 执行成功态的回调函数
-                  resolve(result) // 将新 Promise 置为成功态
+                  if (typeof onFulfilled !== 'function') {
+                    resolve(val)
+                    return
+                  }
+                  var result = onFulfilled(val) // 执行成功态的回调函数
+                  resolve(result) // 将新 MyPromise 置为成功态
                 } catch (error) {
-                  reject(error) // 如果执行成功态的回调函数时出错，将新 Promise 置为失败态
+                  reject(error) // 如果执行成功态的回调函数时出错，将新 MyPromise 置为失败态
                 }
               })
-              onRejectedCallbacks.push((res) => {
+              onRejectedCallbacks.push(function (val) {
                 try {
-                  const result = onRejected(res) // 执行失败态的回调函数
-                  resolve(result) // 将新 Promise 置为成功态
+                  if (typeof onRejected !== 'function') {
+                    resolve(val)
+                    return
+                  }
+                  var result = onRejected(val) // 执行失败态的回调函数
+                  resolve(result) // 将新 MyPromise 置为成功态
                 } catch (error) {
-                  reject(error) // 如果执行失败态的回调函数时出错，将新 Promise 置为失败态
+                  reject(error) // 如果执行失败态的回调函数时出错，将新 MyPromise 置为失败态
                 }
               })
             }
@@ -87,15 +118,21 @@
 
         function finallyMethod(onFinally) {
           return then(
-            (val) => MyPromise.resolve(onFinally()).then(() => val), // 无论 Promise 最终状态如何都会执行的回调函数
-            (res) =>
-              MyPromise.resolve(onFinally()).then(() => {
+            function (val) {
+              return MyPromise.resolve(onFinally()).then(function () {
+                return val
+              })
+            },
+            function (res) {
+              return MyPromise.resolve(onFinally()).then(function () {
                 throw res
-              }) // 无论 Promise 最终状态如何都会执行的回调函数
+              })
+            }
           )
         }
 
         return {
+          state: state,
           then: then,
           catch: catchMethod,
           finally: finallyMethod,
@@ -103,28 +140,28 @@
       }
 
       MyPromise.resolve = function (value) {
-        return new MyPromise((resolve) => resolve(value)) // 返回一个成功态的 Promise
+        return new MyPromise(function (resolve) {
+          resolve(value)
+        })
       }
 
       MyPromise.reject = function (reason) {
-        return new MyPromise((resolve, reject) => reject(reason)) // 返回一个失败态的 Promise
+        return new MyPromise(function (resolve, reject) {
+          reject(reason)
+        })
       }
     </script>
 
     <script>
       new Promise((resolve, reject) => {
         setTimeout(() => {
-          reject(3)
+          // resolve(111)
+          reject(111)
         }, 500)
       })
-        .then(
-          (res) => {
-            console.log('Promise_result1', res)
-          },
-          (err) => {
-            console.log('Promise_result2', err)
-          }
-        )
+        .then(null, (res) => {
+          console.log('Promise_result2', res)
+        })
         .then((res) => {
           console.log('Promise_result3', res)
           throw Error('Promise_error')
@@ -147,17 +184,13 @@
     <script>
       new MyPromise((resolve, reject) => {
         setTimeout(() => {
-          reject(3)
+          // resolve(111)
+          reject(111)
         }, 500)
       })
-        .then(
-          (res) => {
-            console.log('result1', res)
-          },
-          (res) => {
-            console.log('result2', res)
-          }
-        )
+        .then(null, (res) => {
+          console.log('result2', res)
+        })
         .then((res) => {
           console.log('result3', res)
           throw Error('my_error')

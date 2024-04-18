@@ -8,21 +8,40 @@
   </head>
   <body>
     <p>
-      <a href="https://www.ituring.com.cn/article/66566" target="_blank" rel="noopener noreferrer"
+      <a
+        href="https://mengera88.github.io/2017/05/18/Promise%E5%8E%9F%E7%90%86%E8%A7%A3%E6%9E%90/"
+        target="_blank"
+        rel="noopener noreferrer"
         >文章链接</a
+      >
+    </p>
+    <p>
+      <a href="https://promisesaplus.com/" target="_blank" rel="noopener noreferrer"
+        >Promises/A+规范</a
+      >
+    </p>
+    <p>
+      <a
+        href="https://malcolmyu.github.io/malnote/2015/06/12/Promises-A-Plus/"
+        target="_blank"
+        rel="noopener noreferrer"
+        >Promises/A+规范（中文）</a
       >
     </p>
     <script>
       function MyPromise(executor) {
-        var state = 'pending' // 初始状态为 pending
-        var value = undefined // 成功时的返回值
+        var PENDING = 'pending' // 待定
+        var FULFILLED = 'fulfilled' // 已完成
+        var REJECTED = 'rejected' // 已拒绝
+        var state = PENDING // 状态
+        var value = undefined // 返回值
         var reason = undefined // 失败时的原因
         var onFulfilledCallbacks = [] // 存储成功态的回调函数
         var onRejectedCallbacks = [] // 存储失败态的回调函数
 
         function resolve(newValue) {
-          if (state === 'pending') {
-            state = 'fulfilled' // 状态转为成功态
+          if (state === PENDING) {
+            state = FULFILLED // 状态转为成功态
             value = newValue // 保存成功的返回值
             for (var i = 0; i < onFulfilledCallbacks.length; i++) {
               onFulfilledCallbacks[i](value) // 依次执行成功态的回调函数
@@ -31,8 +50,8 @@
         }
 
         function reject(newReason) {
-          if (state === 'pending') {
-            state = 'rejected' // 状态转为失败态
+          if (state === PENDING) {
+            state = REJECTED // 状态转为失败态
             reason = newReason // 保存失败的原因
             for (var i = 0; i < onRejectedCallbacks.length; i++) {
               onRejectedCallbacks[i](reason) // 依次执行失败态的回调函数
@@ -43,42 +62,42 @@
         try {
           executor(resolve, reject) // 执行传入的执行器函数
         } catch (error) {
-          reject(error) // 如果执行器函数出错，将 Promise 状态置为 rejected
+          reject(error) // 如果执行器函数出错，将 MyPromise 状态置为 rejected
         }
 
         function then(onFulfilled, onRejected) {
           return new MyPromise(function (resolve, reject) {
-            if (state === 'fulfilled') {
+            if (state === FULFILLED) {
               try {
                 var result = onFulfilled(value) // 执行成功态的回调函数
-                resolve(result) // 将新 Promise 置为成功态
+                resolve(result) // 将新 MyPromise 置为成功态
               } catch (error) {
-                reject(error) // 如果执行成功态的回调函数时出错，将新 Promise 置为失败态
+                reject(error) // 如果执行成功态的回调函数时出错，将新 MyPromise 置为失败态
               }
             }
-            if (state === 'rejected') {
+            if (state === REJECTED) {
               try {
                 var result = onRejected(reason) // 执行失败态的回调函数
-                resolve(result) // 将新 Promise 置为成功态
+                resolve(result) // 将新 MyPromise 置为成功态
               } catch (error) {
-                reject(error) // 如果执行失败态的回调函数时出错，将新 Promise 置为失败态
+                reject(error) // 如果执行失败态的回调函数时出错，将新 MyPromise 置为失败态
               }
             }
-            if (state === 'pending') {
+            if (state === PENDING) {
               onFulfilledCallbacks.push(function (val) {
                 try {
                   var result = onFulfilled(val) // 执行成功态的回调函数
-                  resolve(result) // 将新 Promise 置为成功态
+                  resolve(result) // 将新 MyPromise 置为成功态
                 } catch (error) {
-                  reject(error) // 如果执行成功态的回调函数时出错，将新 Promise 置为失败态
+                  reject(error) // 如果执行成功态的回调函数时出错，将新 MyPromise 置为失败态
                 }
               })
               onRejectedCallbacks.push(function (res) {
                 try {
                   var result = onRejected(res) // 执行失败态的回调函数
-                  resolve(result) // 将新 Promise 置为成功态
+                  resolve(result) // 将新 MyPromise 置为成功态
                 } catch (error) {
-                  reject(error) // 如果执行失败态的回调函数时出错，将新 Promise 置为失败态
+                  reject(error) // 如果执行失败态的回调函数时出错，将新 MyPromise 置为失败态
                 }
               })
             }
@@ -139,6 +158,7 @@
         }
 
         return {
+          state: state,
           then: then,
           catch: catchMethod,
           finally: finallyMethod,
