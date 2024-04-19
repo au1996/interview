@@ -1,12 +1,12 @@
 const promisesAplusTests = require('promises-aplus-tests')
-const myPromise = require('./myPromise')
+const MyPromise = require('./MyPromise')
 
 const adapter = {
-  resolved: (value) => myPromise.resolve(value),
-  rejected: (reason) => myPromise.reject(reason),
+  resolved: (value) => MyPromise.resolve(value),
+  rejected: (reason) => MyPromise.reject(reason),
   deferred: () => {
     let resolve, reject
-    const promise = new myPromise((res, rej) => {
+    const promise = new MyPromise((res, rej) => {
       resolve = res
       reject = rej
     })

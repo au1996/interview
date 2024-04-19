@@ -1,3 +1,7 @@
+/**
+ * 不解决then方法返回的 Promise 与当前 Promise 相互引用导致的循环引用问题
+ * @param {*} executor
+ */
 function MyPromise(executor) {
   var self = this
   self.state = 'pending' // 初始化状态为待定
@@ -60,7 +64,7 @@ MyPromise.prototype.then = function (onFulfilled, onRejected) {
       setTimeout(function () {
         try {
           var x = onFulfilled(self.value)
-          resolvePromise(newPromise, x, resolve, reject)
+          resolve(x)
         } catch (error) {
           reject(error)
         }
@@ -72,7 +76,7 @@ MyPromise.prototype.then = function (onFulfilled, onRejected) {
       setTimeout(function () {
         try {
           var x = onRejected(self.reason)
-          resolvePromise(newPromise, x, resolve, reject)
+          resolve(x)
         } catch (error) {
           reject(error)
         }
@@ -85,7 +89,7 @@ MyPromise.prototype.then = function (onFulfilled, onRejected) {
         setTimeout(function () {
           try {
             var x = onFulfilled(value)
-            resolvePromise(newPromise, x, resolve, reject)
+            resolve(x)
           } catch (error) {
             reject(error)
           }
@@ -96,7 +100,7 @@ MyPromise.prototype.then = function (onFulfilled, onRejected) {
         setTimeout(function () {
           try {
             var x = onRejected(reason)
-            resolvePromise(newPromise, x, resolve, reject)
+            resolve(x)
           } catch (error) {
             reject(error)
           }
@@ -109,44 +113,25 @@ MyPromise.prototype.then = function (onFulfilled, onRejected) {
   return newPromise
 }
 
-// 解决 Promise 的 then 方法中返回的 Promise 与当前 Promise 相互引用导致的循环引用问题
-function resolvePromise(promise, x, resolve, reject) {
-  if (promise === x) {
-    reject(new TypeError('Chaining cycle detected for promise'))
-    return
-  }
+// Promise 的 catch 方法
+MyPromise.prototype.catch = function (onRejected) {
+  return this.then(null, onRejected)
+}
 
-  if (x && (typeof x === 'object' || typeof x === 'function')) {
-    var called = false
-
-    try {
-      var then = x.then
-
-      if (typeof then === 'function') {
-        then.call(
-          x,
-          function (y) {
-            if (called) return
-            called = true
-            resolvePromise(promise, y, resolve, reject)
-          },
-          function (r) {
-            if (called) return
-            called = true
-            reject(r)
-          }
-        )
-      } else {
-        resolve(x)
-      }
-    } catch (error) {
-      if (called) return
-      called = true
-      reject(error)
+// Promise 的 finally 方法
+MyPromise.prototype.finally = function (onFinally) {
+  return this.then(
+    function (value) {
+      return MyPromise.resolve(onFinally()).then(function () {
+        return value
+      })
+    },
+    function (reason) {
+      return MyPromise.resolve(onFinally()).then(function () {
+        throw reason
+      })
     }
-  } else {
-    resolve(x)
-  }
+  )
 }
 
 // 创建并返回一个已成功的 Promise
@@ -160,6 +145,60 @@ MyPromise.resolve = function (value) {
 MyPromise.reject = function (reason) {
   return new MyPromise(function (resolve, reject) {
     reject(reason)
+  })
+}
+
+// Promise 的 all 方法
+MyPromise.all = function (promises) {
+  return new MyPromise(function (resolve, reject) {
+    var results = [] // 存储所有 Promise 的返回值
+    var count = 0 // 计数器，记录已完成的 Promise 数量
+
+    // 定义处理单个 Promise 的函数
+    function handlePromise(index, value) {
+      results[index] = value // 将返回值存入结果数组的对应位置
+      count++ // 计数器加一
+
+      // 当所有 Promise 都已完成时，将结果数组传递给 resolve 函数
+      if (count === promises.length) {
+        resolve(results)
+      }
+    }
+
+    // 遍历所有 Promise
+    for (var i = 0; i < promises.length; i++) {
+      // 为了在闭包中正确捕获索引 i 的值，需要使用立即执行函数
+      ;(function (index) {
+        promises[index].then(
+          function (value) {
+            handlePromise(index, value)
+          },
+          function (reason) {
+            reject(reason) // 如果有 Promise 失败，则直接调用 reject 函数
+          }
+        )
+      })(i)
+    }
+  })
+}
+
+// Promise 的 race 方法
+MyPromise.race = function (promises) {
+  return new MyPromise(function (resolve, reject) {
+    // 遍历所有 Promise
+    for (var i = 0; i < promises.length; i++) {
+      // 为了在闭包中正确捕获索引 i 的值，需要使用立即执行函数
+      ;(function (index) {
+        promises[index].then(
+          function (value) {
+            resolve(value) // 只要有一个 Promise 完成，则直接调用 resolve 函数
+          },
+          function (reason) {
+            reject(reason) // 如果有 Promise 失败，则直接调用 reject 函数
+          }
+        )
+      })(i)
+    }
   })
 }
 
