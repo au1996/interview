@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>await执行顺序</title>
+    <link rel="stylesheet" href="https://au1996.github.io/interview/css/index.css" />
+  </head>
+  <body>
+    <h1>await执行顺序</h1>
+    <pre>
+      const fn = async () => {
+        console.log(1)
+        await Promise.resolve()
+          .then(() => {
+            console.log(2)
+            Promise.resolve().then(() => {
+              console.log('await 后面的 4 需要等链式回调的任务结束，才进入微任务队列')
+            })
+          })
+          .then(() => {
+            console.log(3)
+            throw 'error'
+          })
+          .catch((err) => {
+            console.log(err)
+          })
+
+        console.log(4)
+      }
+
+      fn()
+
+      // 1
+      // 2
+      // await 后面的 4 需要等链式回调的任务结束，才进入微任务队列
+      // 3
+      // error
+      // 4
+    </pre>
+    <script>
+      const fn = async () => {
+        console.log(1)
+        await Promise.resolve()
+          .then(() => {
+            console.log(2)
+            Promise.resolve().then(() => {
+              console.log('await 后面的 4 需要等链式回调的任务结束，才进入微任务队列')
+            })
+          })
+          .then(() => {
+            console.log(3)
+            throw 'error'
+          })
+          .catch((err) => {
+            console.log(err)
+          })
+
+        console.log(4)
+      }
+
+      fn()
+    </script>
+  </body>
+</html>
