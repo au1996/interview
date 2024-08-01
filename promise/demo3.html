@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Promise执行顺序</title>
+    <link rel="stylesheet" href="https://au1996.github.io/interview/css/index.css" />
+  </head>
+  <body>
+    <h1>Promise执行顺序</h1>
+    <p>
+      <a
+        href="https://au1996.github.io/interview/promise/demo2.html"
+        target="_blank"
+        rel="noopener noreferrer"
+        >Promise状态变更</a
+      >
+    </p>
+    <script>
+      Promise.resolve()
+        .then(() => {
+          console.log(0)
+          // return Promise.resolve(4)
+
+          // 用下面的写法好理解
+          // return Promise.resolve().then(() => {
+          //   return 4
+          // })
+
+          // 插入一条打印：更好理解
+          return Promise.resolve().then(() => {
+            console.log(44)
+            return 4
+          })
+
+          // 解释：当return一个Promise时，外部Promise会吸收（return的Promise）的状态
+          // 1. 先等（return的Promise）的状态变为结束；当状态变为结束时：
+          // 2. 创建一个吸收状态的事件：() => 吸收状态
+          // 3. 将事件放入微任务队列： [() => 吸收状态]
+
+          // 微任务：
+          // 执行栈：
+          // 控制台: 0 1 44 2 3 4 5 6
+          // 验结果：0 1 44 2 3 4 5 6
+        })
+        .then((res) => {
+          console.log(res)
+        })
+
+      Promise.resolve()
+        .then(() => {
+          console.log(1)
+        })
+        .then(() => {
+          console.log(2)
+        })
+        .then(() => {
+          console.log(3)
+        })
+        .then(() => {
+          console.log(5)
+        })
+        .then(() => {
+          console.log(6)
+        })
+    </script>
+  </body>
+</html>

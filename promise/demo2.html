@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Promise状态变更</title>
+    <link rel="stylesheet" href="https://au1996.github.io/interview/css/index.css" />
+  </head>
+  <body>
+    <h1>Promise状态变更</h1>
+    <p>
+      <a
+        href="https://au1996.github.io/interview/promise/demo3.html"
+        target="_blank"
+        rel="noopener noreferrer"
+        >Promise执行顺序</a
+      >
+    </p>
+    <p>1. Promise.resolve() 貌似会立即返回一个已解决的Promise</p>
+    <p>2. 其实不对：Promise.resolve()只是返回一个Promise，状态为 pending</p>
+    <p>
+      3. 当后面跟.then() 或者 .catch()
+      等操作时，需要等这些链式调用的操作结束，才将Promise状态变为已解决
+    </p>
+    <p>4. 如果Promise.resolve(6)后面没有跟任何链式调用，此时会隐式调用.then(() => 6)，</p>
+    <p>
+      5. 然后在这个.then()的回调函数结束后（后面没有继续链式调用），将这个Promise状态置为 fulfilled
+    </p>
+    <p>下面是很好的一个例子：</p>
+    <pre>
+      // 模拟延时函数
+      const delay = (ms = 0) => new Promise((resolve) => setTimeout(resolve, ms))
+      const max = 6
+
+      var p1 = Promise.resolve()
+        .then(async () => {
+          console.log(666)
+
+          // 延时 max 秒，在这个时间内去控制台打印p1, 发现p1一直是 pending 状态
+          await delay(1000 * max)
+
+          // return 'xy_nice'
+          throw 'xy_error'
+        })
+        .catch(async (err) => {
+          console.log(err)
+
+          // 继续延时 max 秒
+          await delay(1000 * max)
+
+          return 'catch_done'
+        })
+
+      console.log('初始化打印p1：', p1)
+      console.log('----分割线----')
+      console.log('----因为打印出来的是对象，记得点击展开这个对象----')
+      console.log('----不然结果看起来不对劲----')
+
+      let i = 1
+      const timer = setInterval(() => {
+        console.log('点击展开右边的对象：', p1)
+        i++
+        if (i > max) {
+          clearInterval(timer)
+        }
+      }, 1000 * 2)
+    </pre>
+    <script>
+      // 模拟延时函数
+      const delay = (ms = 0) => new Promise((resolve) => setTimeout(resolve, ms))
+      const max = 6
+
+      var p1 = Promise.resolve()
+        .then(async () => {
+          console.log(666)
+
+          // 延时 max 秒，在这个时间内去控制台打印p1, 发现p1一直是 pending 状态
+          await delay(1000 * max)
+
+          // return 'xy_nice'
+          throw 'xy_error'
+        })
+        .catch(async (err) => {
+          console.log(err)
+
+          // 继续延时 max 秒
+          await delay(1000 * max)
+
+          return 'catch_done'
+        })
+
+      console.log('初始化打印p1：', p1)
+      console.log('----分割线----')
+      console.log('----因为打印出来的是对象，记得点击展开这个对象----')
+      console.log('----不然结果看起来不对劲----')
+
+      let i = 1
+      const timer = setInterval(() => {
+        console.log('点击展开右边的对象：', p1)
+        i++
+        if (i > max) {
+          clearInterval(timer)
+        }
+      }, 1000 * 2)
+    </script>
+  </body>
+</html>
