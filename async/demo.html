@@ -3,14 +3,21 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>async函数执行顺序</title>
+    <title>async执行顺序</title>
     <link rel="stylesheet" href="https://au1996.github.io/interview/css/index.css" />
   </head>
   <body>
-    <h1>async函数执行顺序</h1>
+    <h1>async执行顺序</h1>
     <p>await 得到一个完成状态的Promise后，会将 await 后面的代码 放入微任务队列</p>
     <p>如果await后面没有代码， 就将 （这个函数的状态设置为完成状态） 这个操作放进微任务队列</p>
-
+    <p>
+      <a
+        href="https://au1996.github.io/interview/async/demo1.html"
+        target="_blank"
+        rel="noopener noreferrer"
+        >async执行顺序详细说明</a
+      >
+    </p>
     <pre>
       async function fn1() {
         console.log(1)
